@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Loading React | React.js Reference</title>
+	<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+
+<h2>Loading React on an existing website</h2>
+<ol>
+	<li>Load <code>react</code> and <code>react-dom</code> from the <code>unpkg.com</code> CDN</li>
+	<li>For development mode, load the <code>.development</code> versions</li>
+	<li>For production mode, load the <code>.production.min</code> versions</li>
+	<li>You can also load <code>babel</code> from the same CDN to be able to use modern JS (use this only on dev, for production use JS pre-processors)</li>
+</ol>
+<!-- -->
+<script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script crossorigin src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+
+<h2>Rendering a React element</h2>
+<ul>
+	<li>Use <code>React.createElement</code> to define and create React elements with the arguments
+		<ol>
+			<li>tag name, e.g. <code>p</code></li>
+			<li>properties object</li>
+			<li>child elements</li>
+		</ol>
+	</li>
+	<li>Use <code>ReactDOM.render</code> to render a React element on the DOM
+		<ol>
+			<li>React element to be displayed</li>
+			<li>DOM node to use as container (will remove all child elements and replace them with the React element)</li>
+		</ol>
+	</li>
+</ul>
+<!-- -->
+<div id="my-app"></div>
+<script>
+(function(){
+	ReactDOM.render(
+		React.createElement('p', {}, 'Hello World!'),
+		document.querySelector('#my-app')
+	);
+})();
+</script>
+
+
+</body>
+</html>
