@@ -67,5 +67,46 @@
 </script>
 
 
+<h2>Defining React components</h2>
+<p>React components are elements with more advanced functionality, like handling passed data, managing an internal state, triggering events, etc…</p>
+<p>There's 2 ways of defining components:</p>
+<ol>
+	<li>As <code>functions</code>:
+		<ul>
+			<li>By default it will have a <code>this.props</code> object available with all passed attributes</li>
+			<li>Needs to return a <code>React.createElement</code></li>
+		</ul>
+	</li>
+	<li>As <code>classes</code>:
+		<ul>
+			<li>The class needs to extend the <code>React.Component</code> class</li>
+			<li>The <code>props</code> object will be passed as the only argument of the <code>constructor</code> function</li>
+			<li>It needs to have a <code>render</code> method, which will return the final <code>React.createElement</code> to be displayed</li>
+		</ul>
+	</li>
+</ol>
+<!-- -->
+<div id="my-app-2"></div>
+<script>
+(function(){
+	function ComponentFunction() {
+		return React.createElement('p', {}, 'Component defined as a function!');
+	}
+	class ComponentClass extends React.Component {
+		render() {
+			return React.createElement('p', {}, 'Component defined as a class!');
+		}
+	}
+	ReactDOM.render(
+		React.createElement('div', {className: 'component'}, [
+			React.createElement(ComponentFunction, {key: 'component-1'}),
+			React.createElement(ComponentClass, {key: 'component-2'})
+		]),
+		document.querySelector('#my-app-2')
+	);
+})();
+</script>
+
+
 </body>
 </html>
