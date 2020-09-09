@@ -287,6 +287,34 @@
 })();
 </script>
 
+<h3>From JSX to plain JS</h3>
+<pre>
+// <strong>JSX:</strong>
+const element = (
+    &lt;h1 className="greeting"&gt;
+        Hello, world!
+    &lt;/h1&gt;
+);
+</pre>
+<pre>
+// <strong>React.createElement()</strong>
+const element = React.createElement(
+    'h1',
+    {className: 'greeting'},
+    'Hello, world!'
+);
+</pre>
+<pre>
+// <strong>React object (simplified)</strong>
+const element = {
+    type: 'h1',
+    props: {
+        className: 'greeting',
+        children: 'Hello, world!'
+    }
+};
+</pre>
+
 
 </body>
 </html>

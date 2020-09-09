@@ -18,13 +18,18 @@ ol ul, ol ol {
 	margin-bottom: 0;
 }
 pre, code {
-	display: inline-block;
-	padding: 0.1rem 0.4rem;
 	border-radius: 3px;
 	font-family: Menlo, sans-serif;
 	font-size: 1.4rem;
 	line-height: 1.71;
 	background-color: #EEE;
+}
+pre {
+	padding: 1rem 1.5rem;
+}
+code {
+	display: inline-block;
+	padding: 0.1rem 0.4rem;
 }
 .component {
 	border: 1px solid #900;
