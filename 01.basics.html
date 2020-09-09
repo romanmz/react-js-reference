@@ -13,12 +13,11 @@
 	<li>Load <code>react</code> and <code>react-dom</code> from the <code>unpkg.com</code> CDN</li>
 	<li>For development mode, load the <code>.development</code> versions</li>
 	<li>For production mode, load the <code>.production.min</code> versions</li>
-	<li>You can also load <code>babel</code> from the same CDN to be able to use modern JS (use this only on dev, for production use JS pre-processors)</li>
+	<li>You may also want to load <code>babel</code> (see "Using JSX templates" section below)</li>
 </ol>
 <!-- -->
 <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
 <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
-<script crossorigin src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 
 
 <h2>Rendering a React element</h2>
@@ -158,6 +157,47 @@
 	ReactDOM.render(
 		React.createElement(ComponentClass, {name: 'Jeff'}),
 		document.querySelector('#my-app-3')
+	);
+})();
+</script>
+
+
+<h2>Using JSX templates</h2>
+<p>JSX is <code>html</code>-like code that gets converted to <code>React.createElement</code> calls.</p>
+<p>To be able to use it you need a JS transpiler like <code>babel</code>.</p>
+
+<h3>Transpiling JSX on the client-side</h3>
+<p>Only do this for quick mock-ups and on dev mode, it's too inefficient for use on production.</p>
+<ol>
+	<li>Load babel from a CDN like <code>unpkg.com</code></li>
+	<li>Add <code>script</code> tags with a <code>type="text/babel"</code> attribute, these scripts will be automatically converted by babel to standard JS</li>
+</ol>
+<!-- -->
+<script crossorigin src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+<div id="my-app-4" class="component"></div>
+<script type="text/babel">
+(function(){
+	class ComponentClass extends React.Component {
+		constructor(props) {
+			super(props);
+			this.state = {counter: 0};
+			this.increment = this.increment.bind(this);
+		}
+		increment() {
+			this.setState(state => ({counter: state.counter+1}))
+		}
+		render() {
+			return (
+				<p>
+					Dynamic content. props: {this.props.name}, state: {this.state.counter} &nbsp;
+					<button key="increment-button" onClick={this.increment}>Increment</button>
+				</p>
+			);
+		}
+	}
+	ReactDOM.render(
+		<ComponentClass name="Jeff" />,
+		document.querySelector('#my-app-4')
 	);
 })();
 </script>
