@@ -28,7 +28,10 @@
 			<li>tag name, e.g. <code>p</code></li>
 			<li>properties object
 				<ul>
-					<li>for the <code>class</code> attribute, you need to use <code>className</code></li>
+					<li><code>key</code> is an internal ID to keep track of elements, it's not rendered on the markup</li>
+					<li>Event handlers (e.g. <code>onClick</code>)</li>
+					<li>Everything else is rendered as HTML attributes, even if they are not standard attributes</li>
+					<li>To add the <code>class</code> attribute, you need to use <code>className</code> instead to prevent conflicts with the reserved js keyword</li>
 				</ul>
 			</li>
 			<li>child elements
@@ -53,13 +56,22 @@
 	</li>
 </ul>
 <!-- -->
-<div id="my-app"></div>
+<div id="my-app" class="component"></div>
 <script>
 (function(){
 	ReactDOM.render(
-		React.createElement('div', {className: 'component'}, [
+		React.createElement(React.Fragment, {}, [
 			'Hello World!',
-			React.createElement('p', {key: 'time-of-day'}, 'The time is '+new Date().toLocaleTimeString())
+			React.createElement(
+				'p',
+				{
+					key: 'time-of-day',
+					id: 'my-id',
+					'non-standard-attr': 'asad',
+					onClick: () => alert('hi!')
+				},
+				'The time is '+new Date().toLocaleTimeString()
+			)
 		]),
 		document.querySelector('#my-app')
 	);
