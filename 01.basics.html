@@ -85,23 +85,23 @@
 <ol>
 	<li>As <code>functions</code>:
 		<ul>
-			<li>By default it will have a <code>this.props</code> object available with all passed attributes</li>
+			<li>The <code>props</code> object will be passed as the first argument</li>
 			<li>Needs to return a <code>React.createElement</code></li>
 		</ul>
 	</li>
 	<li>As <code>classes</code>:
 		<ul>
 			<li>The class needs to extend the <code>React.Component</code> class</li>
-			<li>The <code>props</code> object will be passed as the only argument of the <code>constructor</code> function</li>
+			<li>The <code>props</code> object will be passed as the first argument of the <code>constructor</code> function</li>
 			<li>It needs to have a <code>render</code> method, which will return the final <code>React.createElement</code> to be displayed</li>
 		</ul>
 	</li>
 </ol>
 <!-- -->
-<div id="my-app-2"></div>
+<div id="my-app-2" class="component"></div>
 <script>
 (function(){
-	function ComponentFunction() {
+	function ComponentFunction(props) {
 		return React.createElement('p', {}, 'Component defined as a function!');
 	}
 	class ComponentClass extends React.Component {
@@ -110,11 +110,54 @@
 		}
 	}
 	ReactDOM.render(
-		React.createElement('div', {className: 'component'}, [
+		React.createElement(React.Fragment, {}, [
 			React.createElement(ComponentFunction, {key: 'component-1'}),
 			React.createElement(ComponentClass, {key: 'component-2'})
 		]),
 		document.querySelector('#my-app-2')
+	);
+})();
+</script>
+
+
+<h3>Component <code>props</code></h3>
+<ul>
+	<li>On components, the <code>props</code> object is passed as-is (excluding the <code>key</code> property)</li>
+	<li>It's up to the component to decide what HTML attributes to output, props are not automatically converted to attributes and event handlers like in simple elements</li>
+</ul>
+<h3>Component <code>state</code></h3>
+<ul>
+	<li>The <code>state</code> object holds the internal data related to the component instance, whenever it changes the component gets re-rendered to reflect those changes</li>
+	<li>The state can only be set directly with <code>this.state</code> on the constructor method, everywhere else it needs to be updated with <code>this.setState()</code></li>
+	<li><code>this.setState()</code> accepts a simple object, only the included properties will be updated, missing properties will be kept on the state as they are</li>
+	<li>If you need to calculate the new data based on the current state data, then instead of passing an object, pass a function that receives the current state as the first argument, and return the object with the updated state properties, e.g. <code>this.setState((state, props) => ({counter: state.counter+1}))</code>. This is to ensure you're getting the most up to date version of the state, sometimes there may be pending async changes not yet reflected on <code>this.state</code></li>
+	<li>To access <code>this.state</code> and <code>this.setState</code> inside custom class methods, you'll need to bind <code>this</code> to them in the constructor</li>
+</ul>
+<!-- -->
+<div id="my-app-3" class="component"></div>
+<script>
+(function(){
+	class ComponentClass extends React.Component {
+		constructor(props) {
+			super(props);
+			this.state = {counter: 0};
+			// enable 'this' on methods
+			this.increment = this.increment.bind(this);
+		}
+		increment() {
+			// this.setState({ counter: 10 })							// no need to read current state: pass object
+			this.setState(state => ({counter: state.counter+1}))		// has to read current state: pass function
+		}
+		render() {
+			return React.createElement('p', {}, [
+				'Dynamic content. props: '+this.props.name+', state: '+this.state.counter+' ',
+				React.createElement('button', {key: 'increment-button', onClick: this.increment}, 'Increment')
+			]);
+		}
+	}
+	ReactDOM.render(
+		React.createElement(ComponentClass, {name: 'Jeff'}),
+		document.querySelector('#my-app-3')
 	);
 })();
 </script>
