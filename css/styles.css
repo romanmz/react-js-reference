@@ -10,8 +10,12 @@ body {
 	line-height: 1.5;
 	color: #333;
 }
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6, p, ul, ol, .component {
 	margin: 0 0 2rem;
+}
+ul ul, ul ol,
+ol ul, ol ol {
+	margin-bottom: 0;
 }
 pre, code {
 	display: inline-block;
@@ -21,4 +25,12 @@ pre, code {
 	font-size: 1.4rem;
 	line-height: 1.71;
 	background-color: #EEE;
+}
+.component {
+	border: 1px solid #900;
+	border-radius: 5px;
+	padding: 1rem;
+}
+.component > :last-child {
+	margin-bottom: 0;
 }
