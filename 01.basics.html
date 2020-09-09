@@ -93,6 +93,13 @@
 			<li>The class needs to extend the <code>React.Component</code> class</li>
 			<li>The <code>props</code> object will be passed as the first argument of the <code>constructor</code> function</li>
 			<li>It needs to have a <code>render</code> method, which will return the final <code>React.createElement</code> to be displayed</li>
+			<li>You can define any custom methods you need
+				<ul>
+					<li><strong>NOTE:</strong> if you call methods as event handlers (e.g. <code>onClick="this.myCallback"</code>), they won't have access to any <code>this</code> properties or methods</li>
+					<li>To fix this, you'll need to add some code to the <code>construct</code> method to manually bind <code>this</code> to the methods that need it</li>
+					<li>For example: <code>this.myCallback = this.myCallback.bind(this)</code></li>
+				</ul>
+			</li>
 		</ul>
 	</li>
 </ol>
@@ -130,7 +137,7 @@
 	<li>The state can only be set directly with <code>this.state</code> on the constructor method, everywhere else it needs to be updated with <code>this.setState()</code></li>
 	<li><code>this.setState()</code> accepts a simple object, only the included properties will be updated, missing properties will be kept on the state as they are</li>
 	<li>If you need to calculate the new data based on the current state data, then instead of passing an object, pass a function that receives the current state as the first argument, and return the object with the updated state properties, e.g. <code>this.setState((state, props) => ({counter: state.counter+1}))</code>. This is to ensure you're getting the most up to date version of the state, sometimes there may be pending async changes not yet reflected on <code>this.state</code></li>
-	<li>To access <code>this.state</code> and <code>this.setState</code> inside custom class methods, you'll need to bind <code>this</code> to them in the constructor</li>
+	<li>Remember that to access <code>this.state</code> and <code>this.setState</code> from class methods used as event handlers, you'll need to bind <code>this</code> to them during the constructor call</li>
 </ul>
 <!-- -->
 <div id="my-app-3" class="component"></div>
@@ -163,7 +170,7 @@
 
 
 <h2>Using JSX templates</h2>
-<p>JSX is <code>html</code>-like code that gets converted to <code>React.createElement</code> calls.</p>
+<p><code>JSX</code> is <code>HTML</code>-like code that gets converted to <code>React.createElement</code> calls.</p>
 <p>To be able to use it you need a JS transpiler like <code>babel</code>.</p>
 
 <h3>Transpiling JSX on the client-side</h3>
@@ -211,6 +218,74 @@
 <!-- -->
 <div id="my-app-5" class="component"></div>
 <script src="dist/pre-compiled.js"></script>
+
+<h3>JSX syntax</h3>
+<p>Tags:</p>
+<ul>
+	<li>Use <code>HTML</code>-like tags for both elements and components</li>
+	<li>If the <code>JSX</code> tag is on a single line, there's no need to wrap it on any braces</li>
+	<li>But if it spans multiple lines it's best practice to wrap it inside parentheses <code>()</code></li>
+	<li>Child elements are included between the opening and closing tag of the element/component</li>
+	<li>Tags with no children can be written as self-closing tags</li>
+</ul>
+<p>JS expressions:</p>
+<ul>
+	<li>Use curly braces <code>{}</code> to insert variables and JS expressions inside a tag's content</li>
+	<li>Attributes should be written using camelCase
+		<ul>
+			<li>Use double quotes <code>""</code> for literal string values</li>
+			<li>Use curly braces <code>{}</code> for any other type of JS values and expressions</li>
+			<li>When rendering components, the values you add as attributes will be passed as the <code>props</code> object</li>
+			<li>On event handlers (e.g. <code>onClick</code>), pass only the function name without parentheses</li>
+		</ul>
+	</li>
+	<li>Everything inside <code>JSX</code> is escaped, so it's safe to directly pass input strings</li>
+</ul>
+<p>To see sample code, check out the source code of the following component</p>
+<!-- -->
+<div id="my-app-6" class="component"></div>
+<script type="text/babel">
+(function(){
+	const Fragment = React.Fragment;
+	function HelloWorld() {
+		return <p>Hello World!</p>
+	}
+	class UserDetails extends React.Component {
+		constructor(props) {
+			super(props)
+			this.state = {liked: false}
+			// bind callbacks
+			this.handleClick = this.handleClick.bind(this);
+		}
+		fullName() {
+			return `${this.props.firstName} ${this.props.lastName}`;
+		}
+		handleClick() {
+			this.setState({liked: true});
+		}
+		render() {
+			if(this.state.liked) {
+				return <p>Liked!</p>
+			}
+			return (
+				<Fragment>
+					<HelloWorld />
+					<p>
+						First Name: {this.props.firstName}<br />
+						Full Name: {this.fullName()}<br />
+						JS expression: {(2 + 2) * 3}
+					</p>
+					<button onClick={this.handleClick}>Like this!</button>
+				</Fragment>
+			)
+		}
+	}
+	ReactDOM.render(
+		<UserDetails firstName="Jeff" lastName="Goldblum" />,
+		document.querySelector('#my-app-6')
+	);
+})();
+</script>
 
 
 </body>
