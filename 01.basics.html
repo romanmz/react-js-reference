@@ -202,6 +202,16 @@
 })();
 </script>
 
+<h3>Simple pre-compiling with npm</h3>
+<ul>
+	<li>If not working with npm yet, initialize a simple project with <code>$ npm init -y</code></li>
+	<li>Install babel with presets for React with <code>$ npm install babel-cli@6 babel-preset-react-app@3</code></li>
+	<li>To compile for example from "src" to "dist" folder, run <code>npx babel --watch src --out-dir dist --presets react-app/prod</code></li>
+</ul>
+<!-- -->
+<div id="my-app-5" class="component"></div>
+<script src="dist/pre-compiled.js"></script>
+
 
 </body>
 </html>
