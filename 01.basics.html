@@ -24,7 +24,12 @@
 <ul>
 	<li>Use <code>React.createElement</code> to define and create React elements with the arguments
 		<ol>
-			<li>tag name, e.g. <code>p</code></li>
+			<li>Name of element or component
+				<ul>
+					<li>Tag name as a string, e.g. <code>'p'</code> or</li>
+					<li>Name of the component function/class, e.g. <code>HelloWorld</code></li>
+				</ul>
+			</li>
 			<li>properties object
 				<ul>
 					<li><code>key</code> is an internal ID to keep track of elements, it's not rendered on the markup</li>
@@ -86,6 +91,7 @@
 		<ul>
 			<li>The <code>props</code> object will be passed as the first argument</li>
 			<li>Needs to return a <code>React.createElement</code></li>
+			<li>Can be regular functions, or anonymous functions assigned to a constant</li>
 		</ul>
 	</li>
 	<li>As <code>classes</code>:
@@ -102,14 +108,18 @@
 			</li>
 		</ul>
 	</li>
+	<li>On both cases, best practice is to have the name begin with an uppercase letter, e.g. <code>MyComponent</code></li>
 </ol>
 <!-- -->
 <div id="my-app-2" class="component"></div>
 <script>
 (function(){
+	/*
 	function ComponentFunction(props) {
 		return React.createElement('p', {}, 'Component defined as a function!');
 	}
+	*/
+	const ComponentFunction = props => React.createElement('p', {}, 'Component defined as a function!');
 	class ComponentClass extends React.Component {
 		render() {
 			return React.createElement('p', {}, 'Component defined as a class!');
