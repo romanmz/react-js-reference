@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Test Project | React.js Reference</title>
+	<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script crossorigin src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+
+<div id="app"></div>
+<script type="text/babel">
+	const products = [
+		{category: "Sporting Goods", price: "$49.99", stocked: true, name: "Football"},
+		{category: "Sporting Goods", price: "$9.99", stocked: true, name: "Baseball"},
+		{category: "Sporting Goods", price: "$29.99", stocked: false, name: "Basketball"},
+		{category: "Electronics", price: "$99.99", stocked: true, name: "iPod Touch"},
+		{category: "Electronics", price: "$399.99", stocked: false, name: "iPhone 5"},
+		{category: "Electronics", price: "$199.99", stocked: true, name: "Nexus 7"},
+	];
+	class FilterableProductTable extends React.Component {
+		state = {
+			searchKeyword: '',
+			inStockOnly: false,
+		};
+		searchHandler = e => {
+			if(e.target.type === 'checkbox') {
+				this.setState({inStockOnly: e.target.checked})
+			} else if(e.target.type === 'search') {
+				this.setState({searchKeyword: e.target.value})
+			}
+		}
+		getFilteredProducts = () => {
+			const {searchKeyword, inStockOnly} = this.state;
+			return this.props.products.filter(item => {
+				if(inStockOnly && !item.stocked) {
+					return false;
+				}
+				if(searchKeyword && !item.name.toLowerCase().includes(searchKeyword.toLowerCase())) {
+					return false;
+				}
+				return true;
+			});
+		}
+		render() {
+			return (
+				<div className="component">
+					<SearchBar searchKeyword={this.state.searchKeyword} inStockOnly={this.state.inStockOnly} onChange={this.searchHandler} />
+					<ProductTable products={this.getFilteredProducts()} />
+				</div>
+			);
+		}
+	}
+	const SearchBar = ({searchKeyword, inStockOnly, onChange}) => {
+		return (
+			<form>
+				<div>
+					<input type="search" placeholder="Search…" value={searchKeyword} onChange={onChange} />
+				</div>
+				<div>
+					<label>
+						<input type="checkbox" checked={inStockOnly} onChange={onChange} />
+						Only show products in stock
+					</label>
+				</div>
+			</form>
+		);
+	}
+	const ProductTable = ({products}) => {
+		let previousCategory = '';
+		return (
+			<table>
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Price</th>
+					</tr>
+				</thead>
+				<tbody>
+					{
+						products.reduce((rows, product, i) => {
+							if(product.category !== previousCategory) {
+								rows.push( <ProductCategoryRow key={`category-${i}`} category={product.category} /> );
+								previousCategory = product.category;
+							}
+							rows.push( <ProductRow key={`product-${i}`} product={product} /> );
+							return rows;
+						}, [])
+					}
+				</tbody>
+			</table>
+		);
+	}
+	const ProductCategoryRow = ({category}) => {
+		return (
+			<tr>
+				<th colSpan="2">{category}</th>
+			</tr>
+		);
+	}
+	const ProductRow = ({product: {name, price, stocked}}) => {
+		return (
+			<tr>
+				<td>{stocked ? name : <strike>{name}</strike>}</td>
+				<td>{price}</td>
+			</tr>
+		);
+	}
+	ReactDOM.render(<FilterableProductTable products={products} />, document.querySelector('#app'));
+</script>
+
+
+</body>
+</html>
