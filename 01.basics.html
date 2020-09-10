@@ -32,7 +32,14 @@
 			</li>
 			<li>properties object
 				<ul>
-					<li><code>key</code> is an internal ID to keep track of elements, it's not rendered on the markup</li>
+					<li><code>key</code> is an internal ID to keep track of elements, it's not rendered on the markup
+						<ul>
+							<li>Ensure the key is as stable as possible, for example when representing a list of users where each have a unique ID, you could use that ID as the key, and that way no matter where or in what order position the element is rendered, it will always have the same ID</li>
+							<li>Because of this, using the iteration number should be used only as a last resort, as it would make it difficult to track items if they get reordered</li>
+							<li>Keys are only required on a list context, when output as children of another element, there's no need to specify keys on the main component definition</li>
+							<li>It is only required for keys to be unique among their siblings, other elements somewhere else could have the same key with no issues</li>
+						</ul>
+					</li>
 					<li>Event handlers (e.g. <code>onClick</code>)</li>
 					<li>Everything else is rendered as HTML attributes, even if they are not standard attributes</li>
 					<li>To add the <code>class</code> attribute, you need to use <code>className</code> instead to prevent conflicts with the reserved js keyword</li>
