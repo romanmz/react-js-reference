@@ -24,22 +24,21 @@
 	class FilterableProductTable extends React.Component {
 		state = {
 			searchKeyword: '',
-			inStockOnly: false,
+			searchInStockOnly: false,
 		};
-		searchHandler = e => {
-			if(e.target.type === 'checkbox') {
-				this.setState({inStockOnly: e.target.checked})
-			} else if(e.target.type === 'search') {
-				this.setState({searchKeyword: e.target.value})
-			}
-		}
+		updateKeyword = keyword => {
+			this.setState({searchKeyword: keyword});
+		};
+		updateInStockOnly = inStockOnly => {
+			this.setState({searchInStockOnly: inStockOnly});
+		};
 		getFilteredProducts = () => {
-			const {searchKeyword, inStockOnly} = this.state;
+			const {searchKeyword, searchInStockOnly} = this.state;
 			return this.props.products.filter(item => {
-				if(inStockOnly && !item.stocked) {
+				if(searchInStockOnly && !item.stocked) {
 					return false;
 				}
-				if(searchKeyword && !item.name.toLowerCase().includes(searchKeyword.toLowerCase())) {
+				if(!item.name.toLowerCase().includes(searchKeyword.toLowerCase())) {
 					return false;
 				}
 				return true;
@@ -48,21 +47,24 @@
 		render() {
 			return (
 				<div className="component">
-					<SearchBar searchKeyword={this.state.searchKeyword} inStockOnly={this.state.inStockOnly} onChange={this.searchHandler} />
+					<SearchBar
+						keyword={this.state.searchKeyword} updateKeyword={this.updateKeyword}
+						inStockOnly={this.state.searchInStockOnly} updateInStockOnly={this.updateInStockOnly}
+					/>
 					<ProductTable products={this.getFilteredProducts()} />
 				</div>
 			);
 		}
 	}
-	const SearchBar = ({searchKeyword, inStockOnly, onChange}) => {
+	const SearchBar = ({keyword, updateKeyword, inStockOnly, updateInStockOnly}) => {
 		return (
 			<form>
 				<div>
-					<input type="search" placeholder="Search…" value={searchKeyword} onChange={onChange} />
+					<input type="search" placeholder="Search…" value={keyword} onChange={e => updateKeyword(e.target.value)} />
 				</div>
 				<div>
 					<label>
-						<input type="checkbox" checked={inStockOnly} onChange={onChange} />
+						<input type="checkbox" checked={inStockOnly} onChange={e => updateInStockOnly(e.target.checked)} />
 						Only show products in stock
 					</label>
 				</div>
@@ -71,6 +73,14 @@
 	}
 	const ProductTable = ({products}) => {
 		let previousCategory = '';
+		let rows = [];
+		products.forEach(product => {
+			if(product.category !== previousCategory) {
+				rows.push( <ProductCategoryRow key={product.category} category={product.category} /> );
+				previousCategory = product.category;
+			}
+			rows.push( <ProductRow key={product.name} product={product} /> );
+		});
 		return (
 			<table>
 				<thead>
@@ -80,16 +90,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					{
-						products.reduce((rows, product, i) => {
-							if(product.category !== previousCategory) {
-								rows.push( <ProductCategoryRow key={`category-${i}`} category={product.category} /> );
-								previousCategory = product.category;
-							}
-							rows.push( <ProductRow key={`product-${i}`} product={product} /> );
-							return rows;
-						}, [])
-					}
+					{rows}
 				</tbody>
 			</table>
 		);
