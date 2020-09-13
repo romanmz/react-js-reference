@@ -30,21 +30,74 @@
                     <li>Go to <code>Settings</code></li>
                     <li>Turn on <code>Editor: Format on Save</code></li>
                     <li>
-                        Turn on <code>Prettier: Require Config</code> (this
-                        makes sure it only runs on projects that have
-                        specifically configured it, so you don't mess up other
-                        projects)
-                    </li>
-                    <li>
-                        Create a config file <code>.prettierrc</code> on the
-                        root folder
+                        Turn on <code>Prettier: Require Config</code>
                         <ul>
                             <li>
-                                Add an empty object to use the default settings
+                                This makes sure it only runs on projects that
+                                have specifically configured it, so you don't
+                                mess up other projects
                             </li>
                         </ul>
                     </li>
                 </ol>
+            </li>
+            <li>
+                <strong>Config:</strong>
+                <ol>
+                    <li>
+                        Create a <code>.prettierrc</code> file on the root
+                        folder
+                    </li>
+                    <li>Add an empty object to use the default settings</li>
+                </ol>
+            </li>
+        </ul>
+
+        <h2>ESLint</h2>
+        <p>
+            <code>ESLint</code> is also helps with formatting, but it's more
+            concerned about ensuring you're writing valid code and follow best
+            practices, e.g: does this variable exists? are we using the wrong
+            method here? are we using old/invalid javascript here? accessibility
+            checks, etc…
+        </p>
+        <p>
+            It can also help with spacing, etc… but not as well as prettier can.
+        </p>
+        <ul>
+            <li>
+                <strong>Install:</strong>
+                <code>$ npm i -D eslint eslint-config-prettier</code>
+                <ul>
+                    <li>
+                        <code>eslint-config-prettier</code> is a preset to
+                        disable code formatting rules and delegate them to
+                        <code>prettier</code>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <strong>Script:</strong>
+                <code>"lint": "eslint \"src/**/*.{js,jsx}\" --quiet"</code>
+            </li>
+            <li>
+                <strong>On file save (Visual Studio Code):</strong>
+                <ul>
+                    <li>
+                        Go to <code>Extensions</code> &rarr; Find and install
+                        <code>ESLint</code>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <strong>Config:</strong>
+                <ul>
+                    <li>
+                        Create a <code>.eslintrc.json</code> file on the root
+                        folder
+                    </li>
+                    <li>Check out file for sample config settings</li>
+                </ul>
             </li>
         </ul>
     </body>

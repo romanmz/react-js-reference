@@ -1,0 +1,28 @@
+{
+    // Sets of pre-defined rules, they are applied in order
+    // 'prettier' rules should go at the end since those turn features 'off', and we don't want them to be turned on again by other presets
+    "extends": [
+        "eslint:recommended",
+        "prettier",
+        "prettier/react"
+    ],
+    // Manually turn on or off specific rules
+    "rules": {
+    },
+    // Add new features
+    "plugins": [],
+    "parserOptions": {
+        "ecmaVersion": 2018, // language features (async/await etc…)
+        "sourceType": "module", // import/export ES modules
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "env": {
+        "es6": true, // kinda same as ecmaVersion I think???
+        "browser": true, // specific for js running on browser (timeout, document, window, etc…)
+        "node": true // specific for node environment (require, etc…)
+    },
+    "settings": {
+    }
+}
