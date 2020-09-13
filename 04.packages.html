@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Recommended Packages | React.js Reference</title>
+        <link rel="stylesheet" href="css/styles.css" />
+    </head>
+    <body>
+        <h1>Recommended Packages</h1>
+        <h2>Prettier</h2>
+        <p>
+            <code>Prettier</code> defines auto-formatting rules for spacing,
+            line returns, etc. It's purely about format, it doesn't care about
+            what the code does, as long as it parses,
+            <code>prettier</code> doesn't care.
+        </p>
+        <ul>
+            <li><strong>Install:</strong> <code>$ npm i -D prettier</code></li>
+            <li>
+                <strong>Script:</strong>
+                <code>"format": "prettier \"src/**/*.{js,html}\" --write"</code>
+            </li>
+            <li>
+                <strong>On file save (Visual Studio Code):</strong>
+                <ol>
+                    <li>
+                        Go to <code>Extensions</code> &rarr; Find and install
+                        <code>Prettier</code>
+                    </li>
+                    <li>Go to <code>Settings</code></li>
+                    <li>Turn on <code>Editor: Format on Save</code></li>
+                    <li>
+                        Turn on <code>Prettier: Require Config</code> (this
+                        makes sure it only runs on projects that have
+                        specifically configured it, so you don't mess up other
+                        projects)
+                    </li>
+                    <li>
+                        Create a config file <code>.prettierrc</code> on the
+                        root folder
+                        <ul>
+                            <li>
+                                Add an empty object to use the default settings
+                            </li>
+                        </ul>
+                    </li>
+                </ol>
+            </li>
+        </ul>
+    </body>
+</html>
