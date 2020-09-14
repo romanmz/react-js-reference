@@ -3,14 +3,19 @@
     // 'prettier' rules should go at the end since those turn features 'off', and we don't want them to be turned on again by other presets
     "extends": [
         "eslint:recommended",
+        "plugin:import/errors",
+        "plugin:react/recommended",
+        "plugin:jsx-a11y/recommended",
         "prettier",
         "prettier/react"
     ],
     // Manually turn on or off specific rules
     "rules": {
+        "react/prop-types": 0, // weak type checking that react can do, we disable it because we'll be using typescript later which does it better
+        "no-console": 1 // ???
     },
     // Add new features
-    "plugins": [],
+    "plugins": ["import", "jsx-a11y", "react"],
     "parserOptions": {
         "ecmaVersion": 2018, // language features (async/await etc…)
         "sourceType": "module", // import/export ES modules
@@ -24,5 +29,8 @@
         "node": true // specific for node environment (require, etc…)
     },
     "settings": {
+        "react": {
+            "version": "detect" // figure it out automatically from package.json
+        }
     }
 }

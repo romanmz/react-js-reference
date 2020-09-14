@@ -112,5 +112,77 @@ node_modules/
 .env
 # .vscode/</pre
         >
+
+        <h2>React and ReactDOM as local packages</h2>
+        <p>
+            Loading <code>React</code> and <code>ReactDOM</code> from a CDN is
+            not recommended for production, you should install and bundle a
+            local version instead.
+        </p>
+        <ul>
+            <li>
+                <strong>Install:</strong> <code>$ npm i react react-dom </code>
+            </li>
+            <li>
+                <strong>React rules for ESLint:</strong>
+                <ol>
+                    <li>
+                        Install:
+                        <ul>
+                            <li>
+                                <code
+                                    >$ npm i -D babel-eslint
+                                    eslint-plugin-import eslint-plugin-jsx-a11y
+                                    eslint-plugin-react
+                                </code>
+                            </li>
+                            <li>
+                                <code>babel-eslint</code> allows ESLint to
+                                access babel transpiling (therefore supporting
+                                more modern JS)
+                            </li>
+                            <li>
+                                <code>eslint-plugin-import</code> adds extra
+                                rules for better support of exporting/importing
+                                JS modules
+                            </li>
+                            <li>
+                                <code>eslint-plugin-jsx-a11y</code> adds extra
+                                rules for basic accessibility support
+                            </li>
+                            <li>
+                                <code>eslint-plugin-react</code> adds React
+                                specific rules
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Extra config on <code>.eslintrc.json</code>:
+                        <pre>
+"extends": [
+    "plugin:import/errors",
+    "plugin:react/recommended",
+    "plugin:jsx-a11y/recommended",
+    // they must go before the rules for 'prettier'
+],
+"rules": {
+    "react/prop-types": 0,      // weak type checking that react can do, we disable it because we'll be using typescript later which does it better
+    "no-console": 1             // ???
+},
+"plugins": [
+    "import",
+    "jsx-a11y",
+    "react"
+],
+"settings": {
+    "react": {
+        "version": "detect"     // figure it out automatically from package.json
+    }
+}</pre
+                        >
+                    </li>
+                </ol>
+            </li>
+        </ul>
     </body>
 </html>
