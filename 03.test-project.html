@@ -1,118 +1,186 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="UTF-8">
-	<title>Test Project | React.js Reference</title>
-	<link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
-<script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
-<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
-<script crossorigin src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Test Project | React.js Reference</title>
+        <link rel="stylesheet" href="css/styles.css" />
+    </head>
+    <body>
+        <script
+            crossorigin
+            src="https://unpkg.com/react@16/umd/react.development.js"
+        ></script>
+        <script
+            crossorigin
+            src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
+        ></script>
+        <script
+            crossorigin
+            src="https://unpkg.com/babel-standalone@6/babel.min.js"
+        ></script>
 
-
-<div id="app"></div>
-<script type="text/babel">
-	const products = [
-		{category: "Sporting Goods", price: "$49.99", stocked: true, name: "Football"},
-		{category: "Sporting Goods", price: "$9.99", stocked: true, name: "Baseball"},
-		{category: "Sporting Goods", price: "$29.99", stocked: false, name: "Basketball"},
-		{category: "Electronics", price: "$99.99", stocked: true, name: "iPod Touch"},
-		{category: "Electronics", price: "$399.99", stocked: false, name: "iPhone 5"},
-		{category: "Electronics", price: "$199.99", stocked: true, name: "Nexus 7"},
-	];
-	class FilterableProductTable extends React.Component {
-		state = {
-			searchKeyword: '',
-			searchInStockOnly: false,
-		};
-		updateKeyword = keyword => {
-			this.setState({searchKeyword: keyword});
-		};
-		updateInStockOnly = inStockOnly => {
-			this.setState({searchInStockOnly: inStockOnly});
-		};
-		getFilteredProducts = () => {
-			const {searchKeyword, searchInStockOnly} = this.state;
-			return this.props.products.filter(item => {
-				if(searchInStockOnly && !item.stocked) {
-					return false;
-				}
-				if(!item.name.toLowerCase().includes(searchKeyword.toLowerCase())) {
-					return false;
-				}
-				return true;
-			});
-		}
-		render() {
-			return (
-				<div className="component">
-					<SearchBar
-						keyword={this.state.searchKeyword} updateKeyword={this.updateKeyword}
-						inStockOnly={this.state.searchInStockOnly} updateInStockOnly={this.updateInStockOnly}
-					/>
-					<ProductTable products={this.getFilteredProducts()} />
-				</div>
-			);
-		}
-	}
-	const SearchBar = ({keyword, updateKeyword, inStockOnly, updateInStockOnly}) => {
-		return (
-			<form>
-				<div>
-					<input type="search" placeholder="Search…" value={keyword} onChange={e => updateKeyword(e.target.value)} />
-				</div>
-				<div>
-					<label>
-						<input type="checkbox" checked={inStockOnly} onChange={e => updateInStockOnly(e.target.checked)} />
-						Only show products in stock
-					</label>
-				</div>
-			</form>
-		);
-	}
-	const ProductTable = ({products}) => {
-		let previousCategory = '';
-		let rows = [];
-		products.forEach(product => {
-			if(product.category !== previousCategory) {
-				rows.push( <ProductCategoryRow key={product.category} category={product.category} /> );
-				previousCategory = product.category;
-			}
-			rows.push( <ProductRow key={product.name} product={product} /> );
-		});
-		return (
-			<table>
-				<thead>
-					<tr>
-						<th>Name</th>
-						<th>Price</th>
-					</tr>
-				</thead>
-				<tbody>
-					{rows}
-				</tbody>
-			</table>
-		);
-	}
-	const ProductCategoryRow = ({category}) => {
-		return (
-			<tr>
-				<th colSpan="2">{category}</th>
-			</tr>
-		);
-	}
-	const ProductRow = ({product: {name, price, stocked}}) => {
-		return (
-			<tr>
-				<td>{stocked ? name : <strike>{name}</strike>}</td>
-				<td>{price}</td>
-			</tr>
-		);
-	}
-	ReactDOM.render(<FilterableProductTable products={products} />, document.querySelector('#app'));
-</script>
-
-
-</body>
+        <div id="app"></div>
+        <script type="text/babel">
+            const products = [
+                {
+                    category: 'Sporting Goods',
+                    price: '$49.99',
+                    stocked: true,
+                    name: 'Football',
+                },
+                {
+                    category: 'Sporting Goods',
+                    price: '$9.99',
+                    stocked: true,
+                    name: 'Baseball',
+                },
+                {
+                    category: 'Sporting Goods',
+                    price: '$29.99',
+                    stocked: false,
+                    name: 'Basketball',
+                },
+                {
+                    category: 'Electronics',
+                    price: '$99.99',
+                    stocked: true,
+                    name: 'iPod Touch',
+                },
+                {
+                    category: 'Electronics',
+                    price: '$399.99',
+                    stocked: false,
+                    name: 'iPhone 5',
+                },
+                {
+                    category: 'Electronics',
+                    price: '$199.99',
+                    stocked: true,
+                    name: 'Nexus 7',
+                },
+            ];
+            class FilterableProductTable extends React.Component {
+                state = {
+                    searchKeyword: '',
+                    searchInStockOnly: false,
+                };
+                updateKeyword = (keyword) => {
+                    this.setState({ searchKeyword: keyword });
+                };
+                updateInStockOnly = (inStockOnly) => {
+                    this.setState({ searchInStockOnly: inStockOnly });
+                };
+                getFilteredProducts = () => {
+                    const { searchKeyword, searchInStockOnly } = this.state;
+                    return this.props.products.filter((item) => {
+                        if (searchInStockOnly && !item.stocked) {
+                            return false;
+                        }
+                        if (
+                            !item.name
+                                .toLowerCase()
+                                .includes(searchKeyword.toLowerCase())
+                        ) {
+                            return false;
+                        }
+                        return true;
+                    });
+                };
+                render() {
+                    return (
+                        <div className="component">
+                            <SearchBar
+                                keyword={this.state.searchKeyword}
+                                updateKeyword={this.updateKeyword}
+                                inStockOnly={this.state.searchInStockOnly}
+                                updateInStockOnly={this.updateInStockOnly}
+                            />
+                            <ProductTable
+                                products={this.getFilteredProducts()}
+                            />
+                        </div>
+                    );
+                }
+            }
+            const SearchBar = ({
+                keyword,
+                updateKeyword,
+                inStockOnly,
+                updateInStockOnly,
+            }) => {
+                return (
+                    <form>
+                        <div>
+                            <input
+                                type="search"
+                                placeholder="Search…"
+                                value={keyword}
+                                onChange={(e) => updateKeyword(e.target.value)}
+                            />
+                        </div>
+                        <div>
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    checked={inStockOnly}
+                                    onChange={(e) =>
+                                        updateInStockOnly(e.target.checked)
+                                    }
+                                />
+                                Only show products in stock
+                            </label>
+                        </div>
+                    </form>
+                );
+            };
+            const ProductTable = ({ products }) => {
+                let previousCategory = '';
+                let rows = [];
+                products.forEach((product) => {
+                    if (product.category !== previousCategory) {
+                        rows.push(
+                            <ProductCategoryRow
+                                key={product.category}
+                                category={product.category}
+                            />
+                        );
+                        previousCategory = product.category;
+                    }
+                    rows.push(
+                        <ProductRow key={product.name} product={product} />
+                    );
+                });
+                return (
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>{rows}</tbody>
+                    </table>
+                );
+            };
+            const ProductCategoryRow = ({ category }) => {
+                return (
+                    <tr>
+                        <th colSpan="2">{category}</th>
+                    </tr>
+                );
+            };
+            const ProductRow = ({ product: { name, price, stocked } }) => {
+                return (
+                    <tr>
+                        <td>{stocked ? name : <strike>{name}</strike>}</td>
+                        <td>{price}</td>
+                    </tr>
+                );
+            };
+            ReactDOM.render(
+                <FilterableProductTable products={products} />,
+                document.querySelector('#app')
+            );
+        </script>
+    </body>
 </html>

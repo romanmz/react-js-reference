@@ -1,340 +1,629 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="UTF-8">
-	<title>Loading React | React.js Reference</title>
-	<link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Loading React | React.js Reference</title>
+        <link rel="stylesheet" href="css/styles.css" />
+    </head>
+    <body>
+        <h2>Loading React on an existing website</h2>
+        <ol>
+            <li>
+                Load <code>react</code> and <code>react-dom</code> from the
+                <code>unpkg.com</code> CDN
+            </li>
+            <li>
+                For development mode, load the
+                <code>.development</code> versions
+            </li>
+            <li>
+                For production mode, load the
+                <code>.production.min</code> versions
+            </li>
+            <li>
+                You may also want to load <code>babel</code> (see "Using JSX
+                templates" section below)
+            </li>
+        </ol>
+        <!-- -->
+        <script
+            crossorigin
+            src="https://unpkg.com/react@16/umd/react.development.js"
+        ></script>
+        <script
+            crossorigin
+            src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
+        ></script>
 
+        <h2>Rendering a React element</h2>
+        <ul>
+            <li>
+                Use <code>React.createElement</code> to define and create React
+                elements with the arguments
+                <ol>
+                    <li>
+                        Name of element or component
+                        <ul>
+                            <li>
+                                Tag name as a string, e.g. <code>'p'</code> or
+                            </li>
+                            <li>
+                                Name of the component function/class, e.g.
+                                <code>HelloWorld</code>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        properties object
+                        <ul>
+                            <li>
+                                <code>key</code> is an internal ID to keep track
+                                of elements, it's not rendered on the markup
+                                <ul>
+                                    <li>
+                                        Ensure the key is as stable as possible,
+                                        for example when representing a list of
+                                        users where each have a unique ID, you
+                                        could use that ID as the key, and that
+                                        way no matter where or in what order
+                                        position the element is rendered, it
+                                        will always have the same ID
+                                    </li>
+                                    <li>
+                                        Because of this, using the iteration
+                                        number should be used only as a last
+                                        resort, as it would make it difficult to
+                                        track items if they get reordered
+                                    </li>
+                                    <li>
+                                        Keys are only required on a list
+                                        context, when output as children of
+                                        another element, there's no need to
+                                        specify keys on the main component
+                                        definition
+                                    </li>
+                                    <li>
+                                        It is only required for keys to be
+                                        unique among their siblings, other
+                                        elements somewhere else could have the
+                                        same key with no issues
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>Event handlers (e.g. <code>onClick</code>)</li>
+                            <li>
+                                Everything else is rendered as HTML attributes,
+                                even if they are not standard attributes
+                            </li>
+                            <li>
+                                To add the <code>class</code> attribute, you
+                                need to use <code>className</code> instead to
+                                prevent conflicts with the reserved js keyword
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        child elements
+                        <ul>
+                            <li>
+                                You can pass a string for a simple child text
+                                node, or a React element
+                            </li>
+                            <li>
+                                For multiple children, pass an array with
+                                strings or React elements
+                            </li>
+                            <li>
+                                Each child element needs to have a unique
+                                <code>key</code> prop, so React can easily keep
+                                track of them and update them whenever necessary
+                            </li>
+                        </ul>
+                    </li>
+                </ol>
+            </li>
+            <li>
+                Use <code>ReactDOM.render</code> to render a React element on
+                the <code>DOM</code>
+                <ol>
+                    <li>
+                        React element to be displayed
+                        <ul>
+                            <li>
+                                You can only pass one root element, so if you
+                                need to render multiple elements you'll have to
+                                create a container element and then add all the
+                                the elements you want as children
+                            </li>
+                            <li>
+                                If you don't want the extra markup generated by
+                                a container element, you can use the special
+                                <code>React.Fragment</code> component as
+                                placeholder, it won't display any markup leaving
+                                the child elements at the top-level
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <code>DOM</code> node to use as container
+                        <ul>
+                            <li>
+                                Any child elements will be removed and replaced
+                                with the React element/component
+                            </li>
+                            <li>
+                                Rendered elements are immutable, they will only
+                                be updated if React detects any state changes
+                                inside them, otherwise you would need to
+                                manually call the
+                                <code>ReactDOM.render()</code> again with the
+                                updated data
+                            </li>
+                            <li>
+                                When automatically re-rendering an element,
+                                React compares the previous data with the new
+                                one, and only updates the
+                                <code>DOM</code> elements that reflect the
+                                updated data, the rest are left intact
+                            </li>
+                        </ul>
+                    </li>
+                </ol>
+            </li>
+        </ul>
+        <!-- -->
+        <div id="my-app" class="component"></div>
+        <script>
+            (function () {
+                ReactDOM.render(
+                    React.createElement(React.Fragment, {}, [
+                        'Hello World!',
+                        React.createElement(
+                            'p',
+                            {
+                                key: 'time-of-day',
+                                id: 'my-id',
+                                'non-standard-attr': 'asad',
+                                onClick: () => alert('hi!'),
+                            },
+                            'The time is ' + new Date().toLocaleTimeString()
+                        ),
+                    ]),
+                    document.querySelector('#my-app')
+                );
+            })();
+        </script>
 
-<h2>Loading React on an existing website</h2>
-<ol>
-	<li>Load <code>react</code> and <code>react-dom</code> from the <code>unpkg.com</code> CDN</li>
-	<li>For development mode, load the <code>.development</code> versions</li>
-	<li>For production mode, load the <code>.production.min</code> versions</li>
-	<li>You may also want to load <code>babel</code> (see "Using JSX templates" section below)</li>
-</ol>
-<!-- -->
-<script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
-<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
-
-
-<h2>Rendering a React element</h2>
-<ul>
-	<li>Use <code>React.createElement</code> to define and create React elements with the arguments
-		<ol>
-			<li>Name of element or component
-				<ul>
-					<li>Tag name as a string, e.g. <code>'p'</code> or</li>
-					<li>Name of the component function/class, e.g. <code>HelloWorld</code></li>
-				</ul>
-			</li>
-			<li>properties object
-				<ul>
-					<li><code>key</code> is an internal ID to keep track of elements, it's not rendered on the markup
-						<ul>
-							<li>Ensure the key is as stable as possible, for example when representing a list of users where each have a unique ID, you could use that ID as the key, and that way no matter where or in what order position the element is rendered, it will always have the same ID</li>
-							<li>Because of this, using the iteration number should be used only as a last resort, as it would make it difficult to track items if they get reordered</li>
-							<li>Keys are only required on a list context, when output as children of another element, there's no need to specify keys on the main component definition</li>
-							<li>It is only required for keys to be unique among their siblings, other elements somewhere else could have the same key with no issues</li>
-						</ul>
-					</li>
-					<li>Event handlers (e.g. <code>onClick</code>)</li>
-					<li>Everything else is rendered as HTML attributes, even if they are not standard attributes</li>
-					<li>To add the <code>class</code> attribute, you need to use <code>className</code> instead to prevent conflicts with the reserved js keyword</li>
-				</ul>
-			</li>
-			<li>child elements
-				<ul>
-					<li>You can pass a string for a simple child text node, or a React element</li>
-					<li>For multiple children, pass an array with strings or React elements</li>
-					<li>Each child element needs to have a unique <code>key</code> prop, so React can easily keep track of them and update them whenever necessary</li>
-				</ul>
-			</li>
-		</ol>
-	</li>
-	<li>Use <code>ReactDOM.render</code> to render a React element on the <code>DOM</code>
-		<ol>
-			<li>React element to be displayed
-				<ul>
-					<li>You can only pass one root element, so if you need to render multiple elements you'll have to create a container element and then add all the the elements you want as children</li>
-					<li>If you don't want the extra markup generated by a container element, you can use the special <code>React.Fragment</code> component as placeholder, it won't display any markup leaving the child elements at the top-level</li>
-				</ul>
-			</li>
-			<li><code>DOM</code> node to use as container
-				<ul>
-					<li>Any child elements will be removed and replaced with the React element/component</li>
-					<li>Rendered elements are immutable, they will only be updated if React detects any state changes inside them, otherwise you would need to manually call the <code>ReactDOM.render()</code> again with the updated data</li>
-					<li>When automatically re-rendering an element, React compares the previous data with the new one, and only updates the <code>DOM</code> elements that reflect the updated data, the rest are left intact</li>
-				</ul>
-			</li>
-		</ol>
-	</li>
-</ul>
-<!-- -->
-<div id="my-app" class="component"></div>
-<script>
-(function(){
-	ReactDOM.render(
-		React.createElement(React.Fragment, {}, [
-			'Hello World!',
-			React.createElement(
-				'p',
-				{
-					key: 'time-of-day',
-					id: 'my-id',
-					'non-standard-attr': 'asad',
-					onClick: () => alert('hi!')
-				},
-				'The time is '+new Date().toLocaleTimeString()
-			)
-		]),
-		document.querySelector('#my-app')
-	);
-})();
-</script>
-
-
-<h2>Defining React components</h2>
-<p>React components are elements with more advanced functionality, like handling passed data, managing an internal state, triggering events, etc…</p>
-<p>There's 2 ways of defining components:</p>
-<ol>
-	<li>As <code>functions</code>:
-		<ul>
-			<li>The <code>props</code> object will be passed as the first argument</li>
-			<li>Needs to return a <code>React.createElement</code></li>
-			<li>Can be regular functions, or anonymous functions assigned to a constant</li>
-		</ul>
-	</li>
-	<li>As <code>classes</code>:
-		<ul>
-			<li>The class needs to extend the <code>React.Component</code> class</li>
-			<li>The <code>props</code> object will be passed as the first argument of the <code>constructor</code> function</li>
-			<li>It needs to have a <code>render</code> method, which will return the final <code>React.createElement</code> to be displayed</li>
-			<li>You can define any custom methods you need
-				<ul>
-					<li><strong>NOTE:</strong> if you call methods as event handlers (e.g. <code>onClick="this.myCallback"</code>), they won't have access to any <code>this</code> properties or methods</li>
-					<li>To fix this, you'll need to add some code to the <code>construct</code> method to manually bind <code>this</code> to the methods that need it</li>
-					<li>For example: <code>this.myCallback = this.myCallback.bind(this)</code></li>
-				</ul>
-			</li>
-		</ul>
-	</li>
-	<li>On both cases, best practice is to have the name begin with an uppercase letter, e.g. <code>MyComponent</code></li>
-</ol>
-<!-- -->
-<div id="my-app-2" class="component"></div>
-<script>
-(function(){
-	/*
+        <h2>Defining React components</h2>
+        <p>
+            React components are elements with more advanced functionality, like
+            handling passed data, managing an internal state, triggering events,
+            etc…
+        </p>
+        <p>There's 2 ways of defining components:</p>
+        <ol>
+            <li>
+                As <code>functions</code>:
+                <ul>
+                    <li>
+                        The <code>props</code> object will be passed as the
+                        first argument
+                    </li>
+                    <li>Needs to return a <code>React.createElement</code></li>
+                    <li>
+                        Can be regular functions, or anonymous functions
+                        assigned to a constant
+                    </li>
+                </ul>
+            </li>
+            <li>
+                As <code>classes</code>:
+                <ul>
+                    <li>
+                        The class needs to extend the
+                        <code>React.Component</code> class
+                    </li>
+                    <li>
+                        The <code>props</code> object will be passed as the
+                        first argument of the <code>constructor</code> function
+                    </li>
+                    <li>
+                        It needs to have a <code>render</code> method, which
+                        will return the final
+                        <code>React.createElement</code> to be displayed
+                    </li>
+                    <li>
+                        You can define any custom methods you need
+                        <ul>
+                            <li>
+                                <strong>NOTE:</strong> if you call methods as
+                                event handlers (e.g.
+                                <code>onClick="this.myCallback"</code>), they
+                                won't have access to any
+                                <code>this</code> properties or methods
+                            </li>
+                            <li>
+                                To fix this, you'll need to add some code to the
+                                <code>construct</code> method to manually bind
+                                <code>this</code> to the methods that need it
+                            </li>
+                            <li>
+                                For example:
+                                <code
+                                    >this.myCallback =
+                                    this.myCallback.bind(this)</code
+                                >
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                On both cases, best practice is to have the name begin with an
+                uppercase letter, e.g. <code>MyComponent</code>
+            </li>
+        </ol>
+        <!-- -->
+        <div id="my-app-2" class="component"></div>
+        <script>
+            (function () {
+                /*
 	function ComponentFunction(props) {
 		return React.createElement('p', {}, 'Component defined as a function!');
 	}
 	*/
-	const ComponentFunction = props => React.createElement('p', {}, 'Component defined as a function!');
-	class ComponentClass extends React.Component {
-		render() {
-			return React.createElement('p', {}, 'Component defined as a class!');
-		}
-	}
-	ReactDOM.render(
-		React.createElement(React.Fragment, {}, [
-			React.createElement(ComponentFunction, {key: 'component-1'}),
-			React.createElement(ComponentClass, {key: 'component-2'})
-		]),
-		document.querySelector('#my-app-2')
-	);
-})();
-</script>
+                const ComponentFunction = (props) =>
+                    React.createElement(
+                        'p',
+                        {},
+                        'Component defined as a function!'
+                    );
+                class ComponentClass extends React.Component {
+                    render() {
+                        return React.createElement(
+                            'p',
+                            {},
+                            'Component defined as a class!'
+                        );
+                    }
+                }
+                ReactDOM.render(
+                    React.createElement(React.Fragment, {}, [
+                        React.createElement(ComponentFunction, {
+                            key: 'component-1',
+                        }),
+                        React.createElement(ComponentClass, {
+                            key: 'component-2',
+                        }),
+                    ]),
+                    document.querySelector('#my-app-2')
+                );
+            })();
+        </script>
 
+        <h3>Component <code>props</code></h3>
+        <ul>
+            <li>
+                On components, the <code>props</code> object is passed as-is
+                (excluding the <code>key</code> property)
+            </li>
+            <li>
+                It's up to the component to decide what HTML attributes to
+                output, props are not automatically converted to attributes and
+                event handlers like in simple elements
+            </li>
+            <li>
+                Props are read-only, to handle mutable data use the
+                <code>state</code> object instead
+            </li>
+        </ul>
+        <h3>Component <code>state</code></h3>
+        <ul>
+            <li>
+                The <code>state</code> object holds the private internal data
+                related to the component instance
+            </li>
+            <li>
+                It cannot be accessed by any parent or child elements directly,
+                it can only be manually passed down to children as properties
+            </li>
+            <li>
+                Whenever a state property changes, the component gets
+                re-rendered to reflect those changes
+            </li>
+            <li>
+                The state can only be set directly with
+                <code>this.state</code> on the constructor method, everywhere
+                else it needs to be updated with <code>this.setState()</code>
+            </li>
+            <li>
+                <code>this.setState()</code> accepts a simple object, only the
+                included properties will be updated, missing properties will be
+                kept on the state as they are
+            </li>
+            <li>
+                If you need to calculate the new data based on the current state
+                data, then instead of passing an object, pass a function that
+                receives the current state as the first argument, and return the
+                object with the updated state properties, e.g.
+                <code
+                    >this.setState((state, props) => ({counter:
+                    state.counter+1}))</code
+                >. This is to ensure you're getting the most up to date version
+                of the state, sometimes there may be pending async changes not
+                yet reflected on <code>this.state</code>
+            </li>
+            <li>
+                Remember that to access <code>this.state</code> and
+                <code>this.setState</code> from class methods used as event
+                handlers, you'll need to bind <code>this</code> to them during
+                the constructor call
+            </li>
+        </ul>
+        <!-- -->
+        <div id="my-app-3" class="component"></div>
+        <script>
+            (function () {
+                class ComponentClass extends React.Component {
+                    constructor(props) {
+                        super(props);
+                        this.state = { counter: 0 };
+                        // enable 'this' on methods
+                        this.increment = this.increment.bind(this);
+                    }
+                    increment() {
+                        // this.setState({ counter: 10 })							// no need to read current state: pass object
+                        this.setState((state) => ({
+                            counter: state.counter + 1,
+                        })); // has to read current state: pass function
+                    }
+                    render() {
+                        return React.createElement('p', {}, [
+                            'Dynamic content. props: ' +
+                                this.props.name +
+                                ', state: ' +
+                                this.state.counter +
+                                ' ',
+                            React.createElement(
+                                'button',
+                                {
+                                    key: 'increment-button',
+                                    onClick: this.increment,
+                                },
+                                'Increment'
+                            ),
+                        ]);
+                    }
+                }
+                ReactDOM.render(
+                    React.createElement(ComponentClass, { name: 'Jeff' }),
+                    document.querySelector('#my-app-3')
+                );
+            })();
+        </script>
 
-<h3>Component <code>props</code></h3>
-<ul>
-	<li>On components, the <code>props</code> object is passed as-is (excluding the <code>key</code> property)</li>
-	<li>It's up to the component to decide what HTML attributes to output, props are not automatically converted to attributes and event handlers like in simple elements</li>
-	<li>Props are read-only, to handle mutable data use the <code>state</code> object instead</li>
-</ul>
-<h3>Component <code>state</code></h3>
-<ul>
-	<li>The <code>state</code> object holds the private internal data related to the component instance</li>
-	<li>It cannot be accessed by any parent or child elements directly, it can only be manually passed down to children as properties</li>
-	<li>Whenever a state property changes, the component gets re-rendered to reflect those changes</li>
-	<li>The state can only be set directly with <code>this.state</code> on the constructor method, everywhere else it needs to be updated with <code>this.setState()</code></li>
-	<li><code>this.setState()</code> accepts a simple object, only the included properties will be updated, missing properties will be kept on the state as they are</li>
-	<li>If you need to calculate the new data based on the current state data, then instead of passing an object, pass a function that receives the current state as the first argument, and return the object with the updated state properties, e.g. <code>this.setState((state, props) => ({counter: state.counter+1}))</code>. This is to ensure you're getting the most up to date version of the state, sometimes there may be pending async changes not yet reflected on <code>this.state</code></li>
-	<li>Remember that to access <code>this.state</code> and <code>this.setState</code> from class methods used as event handlers, you'll need to bind <code>this</code> to them during the constructor call</li>
-</ul>
-<!-- -->
-<div id="my-app-3" class="component"></div>
-<script>
-(function(){
-	class ComponentClass extends React.Component {
-		constructor(props) {
-			super(props);
-			this.state = {counter: 0};
-			// enable 'this' on methods
-			this.increment = this.increment.bind(this);
-		}
-		increment() {
-			// this.setState({ counter: 10 })							// no need to read current state: pass object
-			this.setState(state => ({counter: state.counter+1}))		// has to read current state: pass function
-		}
-		render() {
-			return React.createElement('p', {}, [
-				'Dynamic content. props: '+this.props.name+', state: '+this.state.counter+' ',
-				React.createElement('button', {key: 'increment-button', onClick: this.increment}, 'Increment')
-			]);
-		}
-	}
-	ReactDOM.render(
-		React.createElement(ComponentClass, {name: 'Jeff'}),
-		document.querySelector('#my-app-3')
-	);
-})();
-</script>
+        <h2>Using JSX templates</h2>
+        <p>
+            <code>JSX</code> is <code>HTML</code>-like code that gets converted
+            to <code>React.createElement</code> calls.
+        </p>
+        <p>
+            To be able to use it you need a JS transpiler like
+            <code>babel</code>.
+        </p>
 
+        <h3>Transpiling JSX on the client-side</h3>
+        <p>
+            Only do this for quick mock-ups and on dev mode, it's too
+            inefficient for use on production.
+        </p>
+        <ol>
+            <li>Load babel from a CDN like <code>unpkg.com</code></li>
+            <li>
+                Add <code>script</code> tags with a
+                <code>type="text/babel"</code> attribute, these scripts will be
+                automatically converted by babel to standard JS
+            </li>
+        </ol>
+        <!-- -->
+        <script
+            crossorigin
+            src="https://unpkg.com/babel-standalone@6/babel.min.js"
+        ></script>
+        <div id="my-app-4" class="component"></div>
+        <script type="text/babel">
+            (function () {
+                class ComponentClass extends React.Component {
+                    constructor(props) {
+                        super(props);
+                        this.state = { counter: 0 };
+                        this.increment = this.increment.bind(this);
+                    }
+                    increment() {
+                        this.setState((state) => ({
+                            counter: state.counter + 1,
+                        }));
+                    }
+                    render() {
+                        return (
+                            <p>
+                                Dynamic content. props: {this.props.name},
+                                state: {this.state.counter} &nbsp;
+                                <button
+                                    key="increment-button"
+                                    onClick={this.increment}
+                                >
+                                    Increment
+                                </button>
+                            </p>
+                        );
+                    }
+                }
+                ReactDOM.render(
+                    <ComponentClass name="Jeff" />,
+                    document.querySelector('#my-app-4')
+                );
+            })();
+        </script>
 
-<h2>Using JSX templates</h2>
-<p><code>JSX</code> is <code>HTML</code>-like code that gets converted to <code>React.createElement</code> calls.</p>
-<p>To be able to use it you need a JS transpiler like <code>babel</code>.</p>
+        <h3>Simple pre-compiling with npm</h3>
+        <ul>
+            <li>
+                If not working with npm yet, initialize a simple project with
+                <code>$ npm init -y</code>
+            </li>
+            <li>
+                Install babel with presets for React with
+                <code>$ npm install babel-cli@6 babel-preset-react-app@3</code>
+            </li>
+            <li>
+                To compile for example from "src" to "dist" folder, run
+                <code
+                    >npx babel --watch src --out-dir dist --presets
+                    react-app/prod</code
+                >
+            </li>
+        </ul>
+        <!-- -->
+        <div id="my-app-5" class="component"></div>
+        <script src="dist/pre-compiled.js"></script>
 
-<h3>Transpiling JSX on the client-side</h3>
-<p>Only do this for quick mock-ups and on dev mode, it's too inefficient for use on production.</p>
-<ol>
-	<li>Load babel from a CDN like <code>unpkg.com</code></li>
-	<li>Add <code>script</code> tags with a <code>type="text/babel"</code> attribute, these scripts will be automatically converted by babel to standard JS</li>
-</ol>
-<!-- -->
-<script crossorigin src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-<div id="my-app-4" class="component"></div>
-<script type="text/babel">
-(function(){
-	class ComponentClass extends React.Component {
-		constructor(props) {
-			super(props);
-			this.state = {counter: 0};
-			this.increment = this.increment.bind(this);
-		}
-		increment() {
-			this.setState(state => ({counter: state.counter+1}))
-		}
-		render() {
-			return (
-				<p>
-					Dynamic content. props: {this.props.name}, state: {this.state.counter} &nbsp;
-					<button key="increment-button" onClick={this.increment}>Increment</button>
-				</p>
-			);
-		}
-	}
-	ReactDOM.render(
-		<ComponentClass name="Jeff" />,
-		document.querySelector('#my-app-4')
-	);
-})();
-</script>
+        <h3>JSX syntax</h3>
+        <p>Tags:</p>
+        <ul>
+            <li>
+                Use <code>HTML</code>-like tags for both elements and components
+            </li>
+            <li>
+                If the <code>JSX</code> tag is on a single line, there's no need
+                to wrap it on any braces
+            </li>
+            <li>
+                But if it spans multiple lines it's best practice to wrap it
+                inside parentheses <code>()</code>
+            </li>
+            <li>
+                Child elements are included between the opening and closing tag
+                of the element/component
+            </li>
+            <li>Tags with no children can be written as self-closing tags</li>
+        </ul>
+        <p>JS expressions:</p>
+        <ul>
+            <li>
+                Use curly braces <code>{}</code> to insert variables and JS
+                expressions inside a tag's content
+            </li>
+            <li>
+                Attributes should be written using camelCase
+                <ul>
+                    <li>
+                        Use double quotes <code>""</code> for literal string
+                        values
+                    </li>
+                    <li>
+                        Use curly braces <code>{}</code> for any other type of
+                        JS values and expressions
+                    </li>
+                    <li>
+                        When rendering components, the values you add as
+                        attributes will be passed as the
+                        <code>props</code> object
+                    </li>
+                    <li>
+                        On event handlers (e.g. <code>onClick</code>), pass only
+                        the function name without parentheses
+                    </li>
+                </ul>
+            </li>
+            <li>
+                Everything inside <code>JSX</code> is escaped, so it's safe to
+                directly pass input strings
+            </li>
+        </ul>
+        <p>
+            To see sample code, check out the source code of the following
+            component
+        </p>
+        <!-- -->
+        <div id="my-app-6" class="component"></div>
+        <script type="text/babel">
+            (function () {
+                const Fragment = React.Fragment;
+                function HelloWorld() {
+                    return <p>Hello World!</p>;
+                }
+                class UserDetails extends React.Component {
+                    constructor(props) {
+                        super(props);
+                        this.state = { liked: false };
+                        // bind callbacks
+                        this.handleClick = this.handleClick.bind(this);
+                    }
+                    fullName() {
+                        return `${this.props.firstName} ${this.props.lastName}`;
+                    }
+                    handleClick() {
+                        this.setState({ liked: true });
+                    }
+                    render() {
+                        if (this.state.liked) {
+                            return <p>Liked!</p>;
+                        }
+                        return (
+                            <Fragment>
+                                <HelloWorld />
+                                <p>
+                                    First Name: {this.props.firstName}
+                                    <br />
+                                    Full Name: {this.fullName()}
+                                    <br />
+                                    JS expression: {(2 + 2) * 3}
+                                </p>
+                                <button onClick={this.handleClick}>
+                                    Like this!
+                                </button>
+                            </Fragment>
+                        );
+                    }
+                }
+                ReactDOM.render(
+                    <UserDetails firstName="Jeff" lastName="Goldblum" />,
+                    document.querySelector('#my-app-6')
+                );
+            })();
+        </script>
 
-<h3>Simple pre-compiling with npm</h3>
-<ul>
-	<li>If not working with npm yet, initialize a simple project with <code>$ npm init -y</code></li>
-	<li>Install babel with presets for React with <code>$ npm install babel-cli@6 babel-preset-react-app@3</code></li>
-	<li>To compile for example from "src" to "dist" folder, run <code>npx babel --watch src --out-dir dist --presets react-app/prod</code></li>
-</ul>
-<!-- -->
-<div id="my-app-5" class="component"></div>
-<script src="dist/pre-compiled.js"></script>
-
-<h3>JSX syntax</h3>
-<p>Tags:</p>
-<ul>
-	<li>Use <code>HTML</code>-like tags for both elements and components</li>
-	<li>If the <code>JSX</code> tag is on a single line, there's no need to wrap it on any braces</li>
-	<li>But if it spans multiple lines it's best practice to wrap it inside parentheses <code>()</code></li>
-	<li>Child elements are included between the opening and closing tag of the element/component</li>
-	<li>Tags with no children can be written as self-closing tags</li>
-</ul>
-<p>JS expressions:</p>
-<ul>
-	<li>Use curly braces <code>{}</code> to insert variables and JS expressions inside a tag's content</li>
-	<li>Attributes should be written using camelCase
-		<ul>
-			<li>Use double quotes <code>""</code> for literal string values</li>
-			<li>Use curly braces <code>{}</code> for any other type of JS values and expressions</li>
-			<li>When rendering components, the values you add as attributes will be passed as the <code>props</code> object</li>
-			<li>On event handlers (e.g. <code>onClick</code>), pass only the function name without parentheses</li>
-		</ul>
-	</li>
-	<li>Everything inside <code>JSX</code> is escaped, so it's safe to directly pass input strings</li>
-</ul>
-<p>To see sample code, check out the source code of the following component</p>
-<!-- -->
-<div id="my-app-6" class="component"></div>
-<script type="text/babel">
-(function(){
-	const Fragment = React.Fragment;
-	function HelloWorld() {
-		return <p>Hello World!</p>
-	}
-	class UserDetails extends React.Component {
-		constructor(props) {
-			super(props)
-			this.state = {liked: false}
-			// bind callbacks
-			this.handleClick = this.handleClick.bind(this);
-		}
-		fullName() {
-			return `${this.props.firstName} ${this.props.lastName}`;
-		}
-		handleClick() {
-			this.setState({liked: true});
-		}
-		render() {
-			if(this.state.liked) {
-				return <p>Liked!</p>
-			}
-			return (
-				<Fragment>
-					<HelloWorld />
-					<p>
-						First Name: {this.props.firstName}<br />
-						Full Name: {this.fullName()}<br />
-						JS expression: {(2 + 2) * 3}
-					</p>
-					<button onClick={this.handleClick}>Like this!</button>
-				</Fragment>
-			)
-		}
-	}
-	ReactDOM.render(
-		<UserDetails firstName="Jeff" lastName="Goldblum" />,
-		document.querySelector('#my-app-6')
-	);
-})();
-</script>
-
-<h3>From JSX to plain JS</h3>
-<ul>
-	<li>React elements are plain objects, which are cheaper to create than regular <code>DOM</code> nodes</li>
-	<li><code>ReactDOM</code> takes the list of used React elements, and updates the <code>DOM</code> to match them</li>
-</ul>
-<pre>
+        <h3>From JSX to plain JS</h3>
+        <ul>
+            <li>
+                React elements are plain objects, which are cheaper to create
+                than regular <code>DOM</code> nodes
+            </li>
+            <li>
+                <code>ReactDOM</code> takes the list of used React elements, and
+                updates the <code>DOM</code> to match them
+            </li>
+        </ul>
+        <pre>
 // <strong>JSX:</strong>
 const element = (
     &lt;h1 className="greeting"&gt;
         Hello, world!
     &lt;/h1&gt;
 );
-</pre>
-<pre>
+</pre
+        >
+        <pre>
 // <strong>React.createElement()</strong>
 const element = React.createElement(
     'h1',
     {className: 'greeting'},
     'Hello, world!'
 );
-</pre>
-<pre>
+</pre
+        >
+        <pre>
 // <strong>React object (simplified)</strong>
 const element = {
     type: 'h1',
@@ -345,30 +634,27 @@ const element = {
 };
 </pre>
 
-
-<h2>Advanced project setup / Toolchains</h2>
-<dl>
-	<dt>single-page apps</dt>
-	<dd>https://github.com/facebookincubator/create-react-app</dd>
-	<dt>static and server-rendered apps</dt>
-	<dd>https://nextjs.org/learn/</dd>
-	<dt>static websites</dt>
-	<dd>https://www.gatsbyjs.org/docs/</dd>
-	<dt>others</dt>
-	<dd>
-		<dl>
-			<dt>webpack with presets</dt>
-			<dd>https://neutrinojs.org/</dd>
-			<dt>toolkit for full-stack monorepo dev</dt>
-			<dd>https://nx.dev/react</dd>
-			<dt>zero config web app bundler</dt>
-			<dd>https://parceljs.org</dd>
-			<dt>server-rendering framework</dt>
-			<dd>https://github.com/jaredpalmer/razzle</dd>
-		</dl>
-	</dd>
-</dl>
-
-
-</body>
+        <h2>Advanced project setup / Toolchains</h2>
+        <dl>
+            <dt>single-page apps</dt>
+            <dd>https://github.com/facebookincubator/create-react-app</dd>
+            <dt>static and server-rendered apps</dt>
+            <dd>https://nextjs.org/learn/</dd>
+            <dt>static websites</dt>
+            <dd>https://www.gatsbyjs.org/docs/</dd>
+            <dt>others</dt>
+            <dd>
+                <dl>
+                    <dt>webpack with presets</dt>
+                    <dd>https://neutrinojs.org/</dd>
+                    <dt>toolkit for full-stack monorepo dev</dt>
+                    <dd>https://nx.dev/react</dd>
+                    <dt>zero config web app bundler</dt>
+                    <dd>https://parceljs.org</dd>
+                    <dt>server-rendering framework</dt>
+                    <dd>https://github.com/jaredpalmer/razzle</dd>
+                </dl>
+            </dd>
+        </dl>
+    </body>
 </html>
