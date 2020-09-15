@@ -740,5 +740,41 @@ const element = {
                 </dl>
             </dd>
         </dl>
+
+        <h2>Environment settings</h2>
+        <ul>
+            <li>Install <code>React Dev Tools</code> on your browser</li>
+            <li>
+                The <code>&lt;React.StrictMode&gt;</code> component throws
+                warnings when its child components contain features that will be
+                deprecated in the future. You can wrap the entire application
+                inside of it to apply this everywhere, or you can use it only on
+                some sections instead
+            </li>
+            <li>
+                Make sure to always set the correct
+                <code>NODE_ENV</code> constant (<code>development</code>,
+                <code>production</code>, etc…) so that tools will use the
+                appropiate output settings
+            </li>
+            <li>
+                The <code>cross-env</code> package ensures that env variables
+                work consistently across linux, mac, and windows
+                <ul>
+                    <li>
+                        <strong>Install:</strong>
+                        <code>$ npm i -D cross-env</code>
+                    </li>
+                    <li>
+                        <strong>Usage:</strong> Add <code>cross-env</code> on
+                        your npm scripts where you include env variables, e.g:
+                        <code
+                            >"dev:mock": "cross-env MOCK_API=mock npm run
+                            dev"</code
+                        >
+                    </li>
+                </ul>
+            </li>
+        </ul>
     </body>
 </html>
