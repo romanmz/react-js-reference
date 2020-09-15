@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Hooks | React.js Reference</title>
+        <link rel="stylesheet" href="./css/styles.css" />
+        <script
+            crossorigin
+            src="https://unpkg.com/react@16/umd/react.development.js"
+        ></script>
+        <script
+            crossorigin
+            src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
+        ></script>
+        <script
+            crossorigin
+            src="https://unpkg.com/babel-standalone@6/babel.min.js"
+        ></script>
+    </head>
+    <body>
+        <h1>Hooks</h1>
+        <p>
+            Hooks are a way to use features in functional components that were
+            previously only available on class components.
+        </p>
+
+        <h3>Best practices</h3>
+        <ul>
+            <li>
+                All hooks have a name that begins with "use"
+                (<code>useState</code>,
+                <code>useEffect</code>, etc…), the custom hooks that you create
+                should also follow this convention
+            </li>
+            <li>
+                Hooks should always be called at the top level of the current
+                scope, they should never go inside conditionals, loops, etc…
+            </li>
+            <li>
+                Installing rules for <code>ESLint</code> (official syntax rules
+                for writing hooks from the React team):
+                <ul>
+                    <li>
+                        <strong>Install:</strong>
+                        <code>$ npm i -D eslint-plugin-react-hooks</code>
+                    </li>
+                    <li>
+                        <strong>Update ESLint config:</strong>
+                        <pre>
+"rules": [
+    "react-hooks/rules-of-hooks": 2,
+    "react-hooks/exhaustive-deps": 1
+],
+"plugins": [
+    "plugin-react-hooks"
+]</pre
+                        >
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </body>
+</html>

@@ -12,10 +12,12 @@
     // Manually turn on or off specific rules
     "rules": {
         "react/prop-types": 0, // weak type checking that react can do, we disable it because we'll be using typescript later which does it better
+        "react-hooks/rules-of-hooks": 2,
+        "react-hooks/exhaustive-deps": 1,
         "no-console": 1 // ???
     },
     // Add new features
-    "plugins": ["import", "jsx-a11y", "react"],
+    "plugins": ["import", "jsx-a11y", "plugin-react-hooks", "react"],
     "parserOptions": {
         "ecmaVersion": 2018, // language features (async/await etc…)
         "sourceType": "module", // import/export ES modules
