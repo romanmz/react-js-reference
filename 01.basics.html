@@ -289,6 +289,80 @@
                         'Component defined as a function!'
                     );
                 class ComponentClass extends React.Component {
+                    // Constructor
+                    constructor(props) {
+                        super(props);
+                        // set initial state (init vars, set "loading" state, etc…)
+                    }
+
+                    // Static lifecycle methods
+                    static getDerivedStateFromProps(props) {
+                        // this is called whenever the props received by this component are changed by the parent
+                        // but also any time the parent component re-renders (because the parent then re-sends the props to this component),
+                        // so look out for cases where it could be triggered even if the props haven't changed
+
+                        // you need to return an object with the state properties to be updated
+                        return {};
+                    }
+                    static getDerivedStateFromError() {
+                        // this gets triggered whenever there's an error on any of the child elements
+                        // (not including this same component, so you should only make it a wrapper)
+
+                        // similar to 'componentDidCatch', the difference being:
+                        // 1. this gets triggered before the DOM has been updated
+                        // 2. this method was specifically made for updating the component state based on the errors
+
+                        // because of this, this method is ideal for rendering error messages on the component:
+                        // 1. read and update state data based on the errors catched here
+                        // 2. add conditional statements on 'render' to display either the error message or the standard content
+
+                        return {};
+                    }
+
+                    // Lifecycle methods
+                    componentDidCatch(error, info) {
+                        // unlike getDerivedStateFromError, has side effects, access 'this', etc…
+                        // more suited for logging, etc…
+                        //
+                        // DOM has already been updated
+                        //
+                        // use log service (e.g. Azure, TrackJS, Sentry, etc…)
+                        // useful for error handling, e.g.
+                        // 1. define a component for error handling/displaying, e.g. <ErrorBoundary>
+                        // 2. add this method, use it to change a state prop whenever there's an error
+                        // 3. on the render method, check for errors, if there are you can display custom content, otherwise output {this.props.children}
+                    }
+                    // lifecycle methods
+                    UNSAFE_componentWillMount() {
+                        // legacy, do not use
+                    }
+                    componentDidMount() {
+                        // Runs once after the component mounts
+                        // it's a good spot for placing async API calls
+                    }
+                    componentDidUpdate() {
+                        // Runs every time the component gets re-rendered
+                        // Example, setting a redirect after 5 seconds given a condition:
+                        // 1. Check if the redirect condition is true
+                        // 2. If it is, start a timeout function,
+                        //      1st argument: callback function that changes a 'redirect' state property to true
+                        //      2nd argument: 5000 (milliseconds)
+                        // 3. then on the 'render' method, check if the 'redirect' property is true
+                        // 4. in that case, render a <Redirect to="/" /> component (imported from @reach/router)
+                        //      you can also use the navigate('/') function, but the component is recommended
+                    }
+                    UNSAFE_componentWillUpdate() {
+                        // legacy, do not use
+                    }
+                    UNSAFE_componentWillReceiveProps() {
+                        // legacy, do not use
+                    }
+                    componentWillUnmount() {
+                        // Runs right before the component gets removed from the DOM
+                        // Include here clean up tasks, close remote connections, etc…
+                    }
+
+                    // required methods
                     render() {
                         return React.createElement(
                             'p',
