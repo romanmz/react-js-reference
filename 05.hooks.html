@@ -81,10 +81,10 @@
                 </ol>
             </li>
             <li>
-                If you're handling an object, when you call the setter function
-                make sure to pass a brand new object, if you just edit the
-                current state object and return it, <code>React</code> may not
-                trigger a component re-render
+                <mark>Note:</mark> If you're handling an object, when you call
+                the setter function make sure to pass a brand new object, if you
+                just edit the current state object and return it,
+                <code>React</code> may not trigger a component re-render
             </li>
         </ul>
         <!-- -->
@@ -103,6 +103,120 @@
                 );
             };
             ReactDOM.render(<Counter />, document.getElementById('app-1'));
+        </script>
+
+        <h2>useEffect</h2>
+        <p>This hook allows you to access the following lifecycle methods:</p>
+        <ul>
+            <li><code>componentDidMount</code></li>
+            <li><code>componentDidUpdate</code></li>
+            <li><code>componentWillUnmount</code></li>
+        </ul>
+        <ul>
+            <li>
+                <strong>Arguments:</strong>
+                <ol>
+                    <li>
+                        A callback function
+                        <ul>
+                            <li>
+                                By default, this will get triggered once after
+                                the component is mounted, and again every time
+                                the component gets re-rendered
+                            </li>
+                            <li>
+                                If you return another function, that will get
+                                triggered right before the component is
+                                unmounted
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Array of "dependencies" (optional)
+                        <ul>
+                            <li>
+                                If no array is passed, then the callback
+                                function will always run on mount and all
+                                re-renders
+                            </li>
+                            <li>
+                                If the array includes <code>state</code> or
+                                <code>prop</code> elements, then the callback
+                                will run once after being mounted, and then runs
+                                again only whenever any of those properties has
+                                been updated
+                            </li>
+                            <li>
+                                If the array is empty, then the callback is
+                                called only once after the component mounts
+                            </li>
+                        </ul>
+                    </li>
+                </ol>
+            </li>
+            <li><strong>Returns:</strong> <code>void</code></li>
+            <li>
+                <mark>Note:</mark> There's two notable differences between this
+                hook and class methods:
+                <ol>
+                    <li>
+                        The <code>componentDidMount</code> class method is
+                        synchronous, while <code>useEffect</code> is
+                        asynchronous
+                    </li>
+                    <li>
+                        Class components only get unmounted when the component
+                        is going to get removed from the <code>DOM</code>,
+                        functional components do the same, but also get
+                        unmounted right before each re-render. This means that
+                        the function you return from the callback will get
+                        triggered more often than what you would expect from a
+                        class component. This was made to reduce bugs, for
+                        example when you call a callback on mount given an ID
+                        passed as prop, and then the component gets re-rendered,
+                        with class components the mount hook wouldn't run again,
+                        so we would end up with init calls for one ID and a
+                        component showing and calling unmounting routines for a
+                        different ID
+                    </li>
+                </ol>
+            </li>
+        </ul>
+        <!-- -->
+        <div id="app-2" class="component"></div>
+        <script type="text/babel">
+            const useState = React.useState;
+            const useEffect = React.useEffect;
+
+            const Counter = () => {
+                const [counter, setCounter] = useState(0);
+                const [other, setOther] = useState(0);
+
+                useEffect(() => {
+                    console.log('rendered!');
+                    return () => {
+                        console.log('unmounted!');
+                    };
+                }, [counter]);
+
+                return (
+                    <React.Fragment>
+                        <p>
+                            Triggers effect: {counter} &nbsp;
+                            <button onClick={(e) => setCounter(counter + 1)}>
+                                Increment
+                            </button>
+                        </p>
+                        <p>
+                            No effect: {other} &nbsp;
+                            <button onClick={(e) => setOther(other + 1)}>
+                                Other Increment
+                            </button>
+                        </p>
+                    </React.Fragment>
+                );
+            };
+            ReactDOM.render(<Counter />, document.getElementById('app-2'));
         </script>
     </body>
 </html>
