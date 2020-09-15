@@ -100,6 +100,10 @@
                                 need to use <code>className</code> instead to
                                 prevent conflicts with the reserved js keyword
                             </li>
+                            <li>
+                                For the <code>for</code> attribute on labels,
+                                use <code>htmlFor</code> instead
+                            </li>
                         </ul>
                     </li>
                     <li>
@@ -111,7 +115,8 @@
                             </li>
                             <li>
                                 For multiple children, pass an array with
-                                strings or React elements
+                                strings or React elements, or simply keep adding
+                                more parameters
                             </li>
                             <li>
                                 Each child element needs to have a unique
@@ -213,6 +218,11 @@
                     <li>
                         Can be regular functions, or anonymous functions
                         assigned to a constant
+                    </li>
+                    <li>
+                        Functional components don't have access to
+                        <code>state</code> by default, but you can work around
+                        it using the <code>useState</code> hook
                     </li>
                 </ul>
             </li>
