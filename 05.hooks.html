@@ -60,5 +60,49 @@
                 </ul>
             </li>
         </ul>
+
+        <h2>useState</h2>
+        <p>
+            This hook allows you to handle state data for a single property (you
+            can call it multiple times for multiple properties).
+        </p>
+        <ul>
+            <li>
+                <strong>Argument:</strong> The default value for the state
+                property
+            </li>
+            <li>
+                <strong>Returns:</strong> An array with two items:
+                <ol start="0">
+                    <li>the current value</li>
+                    <li>
+                        a setter function you can use to safely update the value
+                    </li>
+                </ol>
+            </li>
+            <li>
+                If you're handling an object, when you call the setter function
+                make sure to pass a brand new object, if you just edit the
+                current state object and return it, <code>React</code> may not
+                trigger a component re-render
+            </li>
+        </ul>
+        <!-- -->
+        <div id="app-1" class="component"></div>
+        <script type="text/babel">
+            const useState = React.useState;
+            const Counter = () => {
+                const [counter, setCounter] = useState(0);
+                return (
+                    <p>
+                        Counter: {counter} &nbsp;
+                        <button onClick={(e) => setCounter(counter + 1)}>
+                            Increment
+                        </button>
+                    </p>
+                );
+            };
+            ReactDOM.render(<Counter />, document.getElementById('app-1'));
+        </script>
     </body>
 </html>
