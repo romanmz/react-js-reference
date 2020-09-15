@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Routing | React.js Reference</title>
+        <link rel="stylesheet" href="./css/styles.css" />
+    </head>
+    <body>
+        <h1>Routing</h1>
+
+        <p>There's three main options for routing in <code>React</code>:</p>
+        <ol>
+            <li><code>React Router</code></li>
+            <li><code>Reach Router</code></li>
+            <li><code>Navi</code></li>
+        </ol>
+
+        <h2>Reach Router</h2>
+        <p>
+            By default <code>Reach Router</code> adds some accessibility
+            features, mainly around handling and triggering focus events, so
+            we're gonna go with it.
+        </p>
+        <ul>
+            <li>
+                <strong>Install:</strong> <code>$ npm i @reach/router</code>
+            </li>
+        </ul>
+
+        <h3>Use:</h3>
+        <ul>
+            <li>
+                <code>&lt;Link to="/"&gt;</code> generates an
+                <code>&lt;a&gt;</code> element with the appropiate navigation
+                logic to go to the specified path without triggering a page
+                refresh
+            </li>
+            <li>
+                <code>&lt;Router path="/" &gt;</code> indicates the content area
+                that will display the appropiate content depending on the route
+                the user is currently in
+                <ul>
+                    <li>
+                        You include each component to be displayed as a child
+                        element with a <code>path</code> attribute that should
+                        match the desired route, e.g.
+                        <code>&lt;HomeContent path="/" /&gt;</code>
+                    </li>
+                    <li>
+                        The <code>path</code> attribute can hold variables if
+                        you mark them with a colon character <code>:</code>,
+                        e.g. for the path <code>details/:id</code>, if the user
+                        goes to the route <code>details/123</code>, then the
+                        component will be displayed and it will receive a
+                        <code>props</code> key of <code>id</code> with a value
+                        of <code>123</code>
+                    </li>
+                    <li>
+                        When there's multiple components with paths that match
+                        the current route, <code>Reach</code> will only display
+                        the most specific one, e.g. if the current route matches
+                        both
+                        <code>&lt;DetailsPage1 path="/details/1" /&gt;</code>
+                        and
+                        <code
+                            >&lt;DetailsPageGeneric path="/details/:id"
+                            /&gt;</code
+                        >
+                        then <code>DetailsPage1</code> will be displayed
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </body>
+</html>
