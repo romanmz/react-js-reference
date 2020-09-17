@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>State Management | React.js Reference</title>
+        <link rel="stylesheet" href="./css/styles.css" />
+        <script
+            crossorigin
+            src="https://unpkg.com/react@16/umd/react.development.js"
+        ></script>
+        <script
+            crossorigin
+            src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
+        ></script>
+        <script
+            crossorigin
+            src="https://unpkg.com/babel-standalone@6/babel.min.js"
+        ></script>
+    </head>
+    <body>
+        <h1>State Management</h1>
+        <p>
+            The standard way of passing data as props down to child elements can
+            quickly become burdensome when you're dealing with large components
+            where you need to pass data down (and possibly up) through many
+            levels.
+        </p>
+        <p>
+            This issue is called "prop drilling", it can be solved by extracting
+            the state data into an independent object called a
+            <code>Context</code>, which we can load only on elements that need
+            to use it, instead of having to keep passing it down from parents to
+            children.
+        </p>
+        <p>
+            There's special libraries like <code>Redux</code> and
+            <code>MobX</code>, but those can be overkill for simple
+            functionality, here we'll see simple examples using
+            <code>Context</code>.
+        </p>
+
+        <h3>Creating a new context</h3>
+        <ol>
+            <li>Import <code>React.createContext</code></li>
+            <li>
+                Call <code>createContext</code>, passing as an argument the
+                default value for the context
+            </li>
+            <li>
+                You can use any data types, if you want to handle multiple
+                properties as part of a single context, use an object with keys
+                and values
+            </li>
+            <li>
+                Store the return value as a
+                <code>const <var>Name</var>Context</code> and export it
+            </li>
+        </ol>
+
+        <h3>Providing a context's value</h3>
+        <p>
+            The context we created will now be available everywhere, by default
+            components that use it will get the default value/s we defined on
+            <code>createContext</code>, however on most cases we might want to
+            update the context data to bind it to a component's
+            <code>state</code> and/or <code>props</code>, to do so:
+        </p>
+        <ol>
+            <li>
+                Import the <code><var>Name</var>Context</code> object
+            </li>
+            <li>
+                Include a
+                <code>&lt;<var>Name</var>Context.Provider&gt;</code> element on
+                the rendered code
+                <ul>
+                    <li>
+                        Add a <code>value</code> attribute to it, passing the
+                        updated data you want
+                    </li>
+                    <li>
+                        That data can be bound to <code>state</code> and/or
+                        <code>prop</code> data, you can also include setter
+                        functions
+                    </li>
+                    <li>
+                        Make sure that the default value(s) and any updates you
+                        make always retain the same structure
+                    </li>
+                    <li>
+                        All descendant elements of this component will have
+                        access to the updated data of the context
+                    </li>
+                    <li>
+                        Even if you omit the <code>value</code> attribute, the
+                        child components won't have access to the original
+                        default value, they will just get an
+                        <code>undefined</code> value
+                    </li>
+                </ul>
+            </li>
+            <li>
+                You can define and use multiple contexts in your application,
+                although sometimes it's better to have a single one to manage
+                all the app's <code>state</code>
+            </li>
+            <li>
+                In cases where you need to add multiple context providers on the
+                same place, you can just nest one inside another, and then
+                include the child components inside of them as usual
+            </li>
+            <li>
+                You can also nest multiple providers of the same context, in
+                that case components will use the value of the closest context
+                provider above them
+            </li>
+        </ol>
+
+        <h3>Using a context</h3>
+        <p>On components where you need to use the context:</p>
+        <ol>
+            <li>
+                Import <code>React.useContext</code> and the
+                <code><var>Name</var>Context</code> object
+            </li>
+            <li>
+                Call <code>useContext</code>, passing the
+                <code>[Name]Context</code> object as a parameter
+            </li>
+            <li>
+                The returned data will contain the value of the closest context
+                provider, or the original default value if none found
+            </li>
+        </ol>
+        <!-- -->
+        <div id="app-1" class="component"></div>
+        <script type="text/babel">
+            (function () {
+                // Creating context
+                const createContext = React.createContext;
+                const ColorContext = createContext('blue');
+                const UserContext = createContext({
+                    user: {
+                        name: 'John Smith',
+                        counter: 0,
+                    },
+                    setUser: () => {},
+                });
+
+                // Providing Context
+                const TopComponent = () => {
+                    const [user, setUser] = React.useState({
+                        name: 'Axel Rose',
+                        counter: 10,
+                    });
+                    const increaseCounter = () => {
+                        setUser({ ...user, counter: user.counter + 1 });
+                    };
+                    return (
+                        <React.Fragment>
+                            <p>--- top component ---</p>
+                            <ChildComponent>
+                                <UserContext.Provider value={{ user, setUser }}>
+                                    <ColorContext.Provider value="red">
+                                        <ChildComponent>
+                                            <ColorContext.Provider value="orange">
+                                                <ChildComponent></ChildComponent>
+                                            </ColorContext.Provider>
+                                        </ChildComponent>
+                                    </ColorContext.Provider>
+                                </UserContext.Provider>
+                            </ChildComponent>
+                            <button onClick={increaseCounter}>Increment</button>
+                        </React.Fragment>
+                    );
+                };
+
+                // Using context
+                const useContext = React.useContext;
+                const ChildComponent = (props) => {
+                    const themeColor = useContext(ColorContext);
+                    const { user, setUser } = useContext(UserContext);
+                    return (
+                        <React.Fragment>
+                            <p style={{ color: themeColor }}>
+                                user: {`${user.name}: ${user.counter}`}
+                            </p>
+                            {props.children}
+                        </React.Fragment>
+                    );
+                };
+
+                // Render
+                ReactDOM.render(
+                    <TopComponent />,
+                    document.getElementById('app-1')
+                );
+            })();
+        </script>
+    </body>
+</html>
