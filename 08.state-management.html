@@ -34,6 +34,13 @@
             children.
         </p>
         <p>
+            Another advantage of using <code>Context</code>, or state management
+            in general, is that updated state data will now persist across
+            component re-renders and when navigating to a different route
+            (without state management, the state data of a component gets reset
+            every time the component is unmounted and mounted again)
+        </p>
+        <p>
             There's special libraries like <code>Redux</code> and
             <code>MobX</code>, but those can be overkill for simple
             functionality, here we'll see simple examples using
@@ -117,8 +124,8 @@
             </li>
         </ol>
 
-        <h3>Using a context</h3>
-        <p>On components where you need to use the context:</p>
+        <h3>Using a context (functional components)</h3>
+        <p>On functional components where you need to use the context:</p>
         <ol>
             <li>
                 Import <code>React.useContext</code> and the
@@ -195,6 +202,66 @@
                 ReactDOM.render(
                     <TopComponent />,
                     document.getElementById('app-1')
+                );
+            })();
+        </script>
+
+        <h3>Using a context (class components)</h3>
+        <p>On class components where you need to use the context:</p>
+        <ol>
+            <li>
+                Import the <code><var>Name</var>Context</code> object
+            </li>
+            <li>
+                Include a
+                <code>&lt;<var>Name</var>Context.Consumer&gt;</code> element on
+                the rendered code
+            </li>
+            <li>
+                Inside of it you have to add a JS expression with a callback
+                function, this function will receive the value passed from the
+                context provider, and it should return the appropiate render
+                output based on that data
+            </li>
+            <li>
+                Example:
+                <pre>
+&lt;<var>Name</var>Context.Consumer&gt;
+    {(myData) => &lt;p&gt;Data: {myData}&lt;/p&gt;}
+&lt;<var>/Name</var>Context.Consumer&gt;</pre
+                >
+            </li>
+        </ol>
+        <!-- -->
+        <div id="app-2" class="component"></div>
+        <script type="text/babel">
+            (function () {
+                const CountryContext = React.createContext('Australia');
+                const TopComponent = () => {
+                    return (
+                        <React.Fragment>
+                            <p>-- top component --</p>
+                            <ChildComponent>
+                                <CountryContext.Provider value="Mexico">
+                                    <ChildComponent></ChildComponent>
+                                </CountryContext.Provider>
+                            </ChildComponent>
+                        </React.Fragment>
+                    );
+                };
+                const ChildComponent = (props) => {
+                    return (
+                        <React.Fragment>
+                            <CountryContext.Consumer>
+                                {(country) => <p>Country: {country}</p>}
+                            </CountryContext.Consumer>
+                            {props.children}
+                        </React.Fragment>
+                    );
+                };
+                ReactDOM.render(
+                    <TopComponent />,
+                    document.getElementById('app-2')
                 );
             })();
         </script>
