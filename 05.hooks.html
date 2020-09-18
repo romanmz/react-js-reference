@@ -81,10 +81,12 @@
                 </ol>
             </li>
             <li>
-                <mark>Note:</mark> If you're handling an object, when you call
-                the setter function make sure to pass a brand new object, if you
-                just edit the current state object and return it,
-                <code>React</code> may not trigger a component re-render
+                <mark>Note:</mark> If you're handling an object or array, when
+                you call the setter function make sure to pass a brand new
+                object/array, if you just edit the current state object and
+                return it, <code>React</code> may not trigger a component
+                re-render. You can use object/array destructuring
+                <code>{ ...object }</code> <code>[ ...array ]</code>
             </li>
         </ul>
         <!-- -->
