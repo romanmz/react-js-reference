@@ -264,6 +264,24 @@
                                     this.myCallback.bind(this)</code
                                 >
                             </li>
+                            <li>
+                                OR you can define the method using the
+                                <code>class properties</code> syntax, e.g:
+                                <code>myCallback = (e) => {}</code>
+                            </li>
+                            <li>
+                                Since you're defining them as
+                                <code>arrow functions</code>, they will retain
+                                their current scope of <code>this</code> (unlike
+                                normal function definitions, which create a new
+                                scope)
+                            </li>
+                            <li>
+                                This comes very handy when you need to use
+                                callback functions as
+                                <code>event listeners</code> and to pass them to
+                                <code>child elements</code>
+                            </li>
                         </ul>
                     </li>
                 </ul>
@@ -277,11 +295,6 @@
         <div id="my-app-2" class="component"></div>
         <script>
             (function () {
-                /*
-	function ComponentFunction(props) {
-		return React.createElement('p', {}, 'Component defined as a function!');
-	}
-	*/
                 const ComponentFunction = (props) =>
                     React.createElement(
                         'p',
@@ -289,6 +302,14 @@
                         'Component defined as a function!'
                     );
                 class ComponentClass extends React.Component {
+                    // Class properties
+                    state = {
+                        hello: 'world',
+                    };
+                    myCallback = (e) => {
+                        console.log(e.target, this.state);
+                    };
+
                     // Constructor
                     constructor(props) {
                         super(props);
@@ -333,9 +354,7 @@
                         // 3. on the render method, check for errors, if there are you can display custom content, otherwise output {this.props.children}
                     }
                     // lifecycle methods
-                    UNSAFE_componentWillMount() {
-                        // legacy, do not use
-                    }
+                    // UNSAFE_componentWillMount() {}   // LEGACY
                     componentDidMount() {
                         // Runs once after the component mounts
                         // it's a good spot for placing async API calls
@@ -351,12 +370,8 @@
                         // 4. in that case, render a <Redirect to="/" /> component (imported from @reach/router)
                         //      you can also use the navigate('/') function, but the component is recommended
                     }
-                    UNSAFE_componentWillUpdate() {
-                        // legacy, do not use
-                    }
-                    UNSAFE_componentWillReceiveProps() {
-                        // legacy, do not use
-                    }
+                    // UNSAFE_componentWillUpdate() {}  // LEGACY
+                    // UNSAFE_componentWillReceiveProps() {}    // LEGACY
                     componentWillUnmount() {
                         // Runs right before the component gets removed from the DOM
                         // Include here clean up tasks, close remote connections, etc…
@@ -364,11 +379,14 @@
 
                     // required methods
                     render() {
-                        return React.createElement(
-                            'p',
-                            {},
-                            'Component defined as a class!'
-                        );
+                        return React.createElement('p', {}, [
+                            'Component defined as a class! ',
+                            React.createElement(
+                                'button',
+                                { key: 'button', onClick: this.myCallback },
+                                'Click me!'
+                            ),
+                        ]);
                     }
                 }
                 ReactDOM.render(
