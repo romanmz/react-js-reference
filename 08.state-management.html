@@ -20,6 +20,7 @@
     </head>
     <body>
         <h1>State Management</h1>
+        <h2>Using Contexts</h2>
         <p>
             The standard way of passing data as props down to child elements can
             quickly become burdensome when you're dealing with large components
@@ -265,5 +266,241 @@
                 );
             })();
         </script>
+
+        <h2>Using Reducers</h2>
+        <p>
+            Reducers are a safer way of managing state, especially for
+            applications with more complex state data structures, or on cases
+            where new state data depends on the previous state, or where there
+            may be multiple updates to state data coming from multiple places at
+            the same time.
+        </p>
+        <p>
+            So instead of updating the state directly from the UI
+            <code>UI &rarr; state</code>, updates are queued and applied by the
+            intermediate reducer
+            <code>UI &rarr; dispatch action &rarr; reducer &rarr; state</code>.
+        </p>
+
+        <h3>Creating a reducer</h3>
+        <ul>
+            <li>
+                Define a <code>const <var>Name</var>Reducer</code> function
+                which takes two arguments:
+            </li>
+            <li>
+                <strong>Arguments:</strong>
+                <ol start="0">
+                    <li>
+                        <code>state</code>, which holds the most up to date
+                        version of the state data
+                    </li>
+                    <li>
+                        <code>action</code> which is a simple object with two
+                        properties:
+                        <ul>
+                            <li>
+                                <code>type</code>, which contains a string with
+                                the name of the action to perform
+                            </li>
+                            <li>
+                                <code>payload</code>, which contains the value
+                                to be taken by the <code>action</code> to alter
+                                the
+                                <code>state</code>
+                            </li>
+                        </ul>
+                    </li>
+                </ol>
+            </li>
+            <li>
+                <strong>Body:</strong>
+                <ul>
+                    <li>
+                        Should be just a <code>switch</code> statement comparing
+                        <code>action.type</code>
+                    </li>
+                    <li>
+                        The convention is to write action names in all uppercase
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <strong>Returns:</strong>
+                <ul>
+                    <li>
+                        Each <code>case</code> should return a new object
+                        representing the new <code>state</code> data, in this
+                        case it must include all properties
+                    </li>
+                    <li>
+                        For this you can de-structure the received
+                        <code>state</code> object, and override any updated
+                        properties, e.g:
+                        <code>{ ...state, mykey: action.payload }</code>
+                    </li>
+                    <li>
+                        The <code>default</code> setting should just return the
+                        <code>state</code> as is
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3>Using a reducer</h3>
+        <ol>
+            <li>
+                Import <code>React.useReducer</code> and the
+                <code><var>Name</var>Reducer</code> function
+            </li>
+            <li>
+                Call <code>useReducer</code> with the following arguments:
+                <ol start="0">
+                    <li>The reducer function</li>
+                    <li>The initial <code>state</code> data</li>
+                </ol>
+            </li>
+            <li>
+                <code>useReducer</code> will return an array with two values:
+                <ol start="0">
+                    <li>The current <code>state</code>data</li>
+                    <li>A <code>dispatch</code> function</li>
+                </ol>
+            </li>
+        </ol>
+
+        <h3>Dispatching actions</h3>
+        <ul>
+            <li>
+                Call the <code>dispatch</code> function passing an
+                <code>action</code> object (with <code>type</code> and
+                <code>payload</code> properties)
+            </li>
+        </ul>
+        <!-- -->
+        <div id="app-3" class="component"></div>
+        <script type="text/babel">
+            (function () {
+                // Creating a reducer
+                const EmployeesReducer = (state, action) => {
+                    switch (action.type) {
+                        case 'SET_CURRENT_EMPLOYEE':
+                            return {
+                                ...state,
+                                currentEmployee: action.payload,
+                            };
+                        case 'ADD_EMPLOYEE':
+                            return {
+                                ...state,
+                                employees: [...state.employees, action.payload],
+                            };
+                        default:
+                            return state;
+                    }
+                };
+
+                const TestingComponent = (props) => {
+                    // Using a reducer
+                    const useReducer = React.useReducer;
+                    const [state, dispatch] = useReducer(EmployeesReducer, {
+                        employees: ['Tom', 'Jane', 'Kat'],
+                        currentEmployee: 0,
+                    });
+
+                    // Dispatching actions:
+                    return (
+                        <React.Fragment>
+                            <p>
+                                Employees: {state.employees.join(', ')} <br />
+                                Current:{' '}
+                                {state.employees[state.currentEmployee]}
+                            </p>
+                            <p>
+                                <button
+                                    onClick={(e) =>
+                                        dispatch({
+                                            type: 'ADD_EMPLOYEE',
+                                            payload: `Employee ${
+                                                state.employees.length + 1
+                                            }`,
+                                        })
+                                    }
+                                >
+                                    Add employee
+                                </button>
+                                <br />
+                                <button
+                                    onClick={(e) =>
+                                        dispatch({
+                                            type: 'SET_CURRENT_EMPLOYEE',
+                                            payload:
+                                                state.currentEmployee <
+                                                state.employees.length - 1
+                                                    ? state.currentEmployee + 1
+                                                    : 0,
+                                        })
+                                    }
+                                >
+                                    Set current employee
+                                </button>
+                            </p>
+                        </React.Fragment>
+                    );
+                };
+
+                // Render
+                ReactDOM.render(
+                    <TestingComponent />,
+                    document.getElementById('app-3')
+                );
+            })();
+        </script>
+
+        <h3>Using local storage</h3>
+        <p>
+            Reducers are a good place to include the logic for storing and
+            loading data from <code>localStorage</code> or
+            <code>sessionStorage</code>
+        </p>
+        <ul>
+            <li>
+                <strong>Saving to storage:</strong>
+                <ul>
+                    <li>
+                        On actions that update a <code>state</code> property you
+                        also want to persist on the browser, call
+                        <code
+                            >localStorage.setItem( "propertyName",
+                            JSON.stringify( state.propertyName ) );</code
+                        >
+                        before return
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <strong>Loading from storage:</strong>
+                <ul>
+                    <li>
+                        Create special actions on the reducer for loading
+                        properties from storage, e.g.
+                        <code>LOAD_<var>PROPNAME</var>_FROM_STORAGE</code>
+                    </li>
+                    <li>
+                        Inside them, load the data with
+                        <code
+                            >const propertyName = JSON.parse(
+                            localStorage.getItem( "propertyName" ) ) ||
+                            [];</code
+                        >
+                        and return a new state object based on that
+                    </li>
+                    <li>
+                        On components where you use the properties saved on
+                        storage, create a <code>useEffect</code> which only runs
+                        on mount, and dispatch the loading actions from there
+                    </li>
+                </ul>
+            </li>
+        </ul>
     </body>
 </html>
