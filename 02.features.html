@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Other Features | React.js Reference</title>
+        <link rel="stylesheet" href="css/styles.css" />
+        <script
+            crossorigin
+            src="https://unpkg.com/react@16/umd/react.development.js"
+        ></script>
+        <script
+            crossorigin
+            src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
+        ></script>
+        <script
+            crossorigin
+            src="https://unpkg.com/babel-standalone@6/babel.min.js"
+        ></script>
+    </head>
+    <body>
+        <h1>Other Features</h1>
+
+        <h2>Events</h2>
+        <ul>
+            <li>
+                React events are named using <code>camelCase</code>, e.g:
+                <code>onClick</code> instead of <code>onclick</code>
+            </li>
+            <li>
+                When using JSX you need to pass event handlers as a JS
+                expression <code>onClick={eventHandler}</code>, not as a string
+                literal <code>onClick="eventHandler"</code>
+            </li>
+            <li>
+                If you are using class methods as event handlers, remember to
+                make sure <code>this</code> is correctly bound
+            </li>
+            <li>
+                If you need to use the same event handler with different
+                arguments, for example when iterating a collection of elements,
+                you can pass an arrow function so you can control exactly what
+                arguments to send to the callback, e.g:
+                <code>onClick={(e) => this.deleteRow(id, e)}</code>
+            </li>
+        </ul>
+        <!-- -->
+        <div id="my-app-1" class="component"></div>
+        <script type="text/babel">
+            (function () {
+                class LoggingButton extends React.Component {
+                    state = { clicked: false };
+                    handleClick = () => {
+                        this.setState((state) => ({ clicked: !state.clicked }));
+                    };
+                    render() {
+                        return (
+                            <button onClick={this.handleClick}>
+                                Toggle: {this.state.clicked ? 'YES' : 'NO'}
+                            </button>
+                        );
+                    }
+                }
+                ReactDOM.render(
+                    <LoggingButton />,
+                    document.querySelector('#my-app-1')
+                );
+            })();
+        </script>
+    </body>
+</html>
