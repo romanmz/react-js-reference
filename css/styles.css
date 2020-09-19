@@ -1,75 +1,95 @@
 html {
-	font-size: 62.5%;
+    font-size: 62.5%;
 }
 body {
-	margin: 0 auto;
-	padding: 4rem;
-	max-width: 120rem;
-	font-family: Helvetica, Arial, sans-serif;
-	font-size: 1.6rem;
-	line-height: 1.5;
-	color: #333;
+    margin: 0 auto;
+    padding: 4rem;
+    max-width: 120rem;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 1.6rem;
+    line-height: 1.5;
+    color: #333;
 }
-h1, h2, h3, h4, h5, h6, p, ul, ol, dl, table, form, .component {
-	margin: 0 0 2rem;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+dl,
+table,
+form,
+.component {
+    margin: 0 0 2rem;
 }
-ul ul, ul ol,
-ol ul, ol ol,
+ul ul,
+ul ol,
+ol ul,
+ol ol,
 dl dl {
-	padding-left: 4rem;
-	margin-bottom: 0;
+    padding-left: 4rem;
+    margin-bottom: 0;
 }
-dl {}
+dl {
+}
 dt {
-	font-weight: bolder;
+    font-weight: bolder;
 }
 dd {
-	margin: 0;
+    margin: 0;
 }
-pre, code {
-	border-radius: 3px;
-	font-family: Menlo, sans-serif;
-	font-size: 1.4rem;
-	line-height: 1.71;
-	background-color: #EEE;
+pre,
+code {
+    border-radius: 3px;
+    font-family: Menlo, sans-serif;
+    font-size: 1.4rem;
+    line-height: 1.71;
+    background-color: #eee;
 }
 pre {
-	padding: 1rem 1.5rem;
+    padding: 1rem 1.5rem;
 }
 code {
-	display: inline-block;
-	padding: 0.1rem 0.4rem;
+    display: inline-block;
+    padding: 0.1rem 0.4rem;
 }
 table {
-	width: 100%;
-	border-collapse: collapse;
-	border: 1px solid #eee;
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #eee;
 }
-td, th {
-	padding: 0.25em 0.5em;
+td,
+th {
+    padding: 0.25em 0.5em;
 }
 thead tr {
-	background: #eee;
+    background: #eee;
 }
 th {
-	text-align: left;
+    text-align: left;
 }
-form {}
-input[type="text"],
-input[type="search"] {
-	font-size: 1em;
-	line-height: 1;
-	padding: .25em .5em;
-	width: 100%;
-	max-width: 40rem;
-	color: #666;
-	margin: 0.5rem;
+form {
+}
+input[type='text'],
+input[type='search'],
+textarea {
+    font-family: inherit;
+    font-size: 1em;
+    line-height: 1;
+    padding: 0.25em 0.5em;
+    width: 100%;
+    max-width: 40rem;
+    color: #666;
+    margin: 0.5rem;
 }
 .component {
-	border: 1px solid #900;
-	border-radius: 5px;
-	padding: 1rem;
+    border: 1px solid #900;
+    border-radius: 5px;
+    padding: 1rem;
 }
 .component > :last-child {
-	margin-bottom: 0;
+    margin-bottom: 0;
 }
