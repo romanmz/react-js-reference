@@ -33,8 +33,7 @@ dl dl {
     padding-left: 4rem;
     margin-bottom: 0;
 }
-dl {
-}
+/* dl {} */
 dt {
     font-weight: bolder;
 }
@@ -71,8 +70,7 @@ thead tr {
 th {
     text-align: left;
 }
-form {
-}
+/* form {} */
 input[type='text'],
 input[type='search'],
 textarea {
@@ -92,4 +90,18 @@ textarea {
 }
 .component > :last-child {
     margin-bottom: 0;
+}
+#modal > div {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.75);
 }

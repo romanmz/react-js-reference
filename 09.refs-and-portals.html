@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Refs and Portals | React.js Reference</title>
+        <link rel="stylesheet" href="./css/styles.css" />
+    </head>
+    <body>
+        <h1>Refs and Portals</h1>
+
+        <h2>Refs</h2>
+        <p>
+            You can use "refs" to hold permanent references to an element or
+            state, this means that whatever you store there will remain
+            unchanged even across re-renders or unmounting/mounting.
+        </p>
+        <ol>
+            <li>Import the <code>React.useRef</code> function</li>
+            <li>
+                Call it passing the initial value for the object you want to
+                hold, store it in a constant.
+                <code>const myRef = useRef(null)</code>
+            </li>
+            <li>
+                You can read or set the value by accessing the
+                <code>current</code> property of the ref object, e.g:
+                <code>myRef.current</code>
+            </li>
+        </ol>
+
+        <h2>Portals</h2>
+        <p>
+            Sometimes your application may contain functionality that could
+            affect content displayed on other sections of the page, outside of
+            the app content, for example an action may update a sidebar
+            navigation, or open a popup modal.
+        </p>
+        <p>
+            In those cases you would be limited by the default render
+            functionality as that only affects the content inside the app
+            container.
+        </p>
+        <p>"Portals" are a solution to this, to use them:</p>
+        <ol>
+            <li>Import the <code>ReactDOM.createPortal</code> function</li>
+            <li>
+                Inside a component's render function, instead of directly
+                returning the elements to be rendered, return a call to
+                <code>createPortal</code>
+            </li>
+            <li>
+                The first argument should be the elements to be rendered, and
+                the second argument should be the DOM node where they should be
+                appended to
+            </li>
+            <li>
+                e.g:
+                <code
+                    >return createPortal(&lt;NavMenu /&gt;,
+                    document.getElementById('sidebar'))</code
+                >
+            </li>
+            <li>
+                So now whenever you include the component that returns a portal
+                within your application, it will actually render the contents on
+                the DOM node specified on the <code>createPortal</code> call
+            </li>
+            <li>
+                The cool thing is that even if the contents are rendered outside
+                of the application, the contents will still have access to the
+                <code>state</code> data, and events triggered by the portal will
+                bubble up to the application itself!
+            </li>
+        </ol>
+    </body>
+</html>

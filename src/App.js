@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Router, Link } from '@reach/router';
 import HelloWorld from './HelloWorld';
 import DetailsGeneric from './DetailsGeneric';
 import DetailsSpecific from './DetailsSpecific';
+import Modal from './Modal';
 
 const App = () => {
+    const [modalOpen, setModalOpen] = useState(false);
     return (
         <React.StrictMode>
             <main className="app-main">
@@ -33,6 +35,15 @@ const App = () => {
                         <DetailsSpecific path="/details/1" />
                     </Router>
                 </section>
+                <button onClick={(e) => setModalOpen(true)}>Open Modal</button>
+                {modalOpen && (
+                    <Modal>
+                        <p>Modal Content!</p>
+                        <button onClick={(e) => setModalOpen(false)}>
+                            Close Modal
+                        </button>
+                    </Modal>
+                )}
             </main>
         </React.StrictMode>
     );
