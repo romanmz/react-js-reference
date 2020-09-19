@@ -367,5 +367,66 @@
                 );
             })();
         </script>
+
+        <h2>Lifting state up</h2>
+        <p>
+            As explained before, data normally only flows down from parent
+            components to their children. If you need to lift data from a child
+            compontent to a parent:
+        </p>
+        <ol>
+            <li>
+                Pass an event handler from the parent to the child as a
+                <code>prop</code>
+            </li>
+            <li>
+                The child will trigger the
+                <code>this.props.<var>eventHandler</var></code> function as
+                required, passing its own internal data as arguments
+            </li>
+            <li>
+                The parent element will run the event handler and use the
+                child's data as required.
+            </li>
+            <li>
+                A common naming convention when handling a single property is to
+                use the same prop names as controlled inputs, i.e:
+                <code>value</code> and <code>onChange</code>
+            </li>
+        </ol>
+
+        <h2>Composition</h2>
+        <ul>
+            <li>
+                Use <code>{props.children}</code> to indicate where to display
+                the child elements included inside the component
+            </li>
+            <li>
+                You can also pass elements and components using attributes, and
+                then access them like any other prop, e.g:
+                <ul>
+                    <li>
+                        <strong>Defining multiple render spots:</strong>
+                        <pre>
+&lt;React.Fragment&gt;
+    &lt;main&gt;{props.mainElement}&lt;/main&gt;
+    &lt;aside&gt;{props.sidebarElement}&lt;/aside&gt;
+&lt;/React.Fragment&gt;</pre
+                        >
+                    </li>
+                    <li>
+                        <strong>Passing components as props:</strong>
+                        <pre>
+&lt;MyComponent mainElement={&lt;Article /&gt;} sidebarElement={&lt;Navigation /&gt;} /&gt;</pre
+                        >
+                    </li>
+                </ul>
+            </li>
+            <li>
+                You can create base components with barebones functionality, and
+                then "extend" them with other components that implement specific
+                details (no explicit class inheritance is needed)
+            </li>
+        </ul>
     </body>
 </html>
