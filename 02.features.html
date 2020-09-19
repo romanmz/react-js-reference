@@ -62,7 +62,77 @@
                 }
                 ReactDOM.render(
                     <LoggingButton />,
-                    document.querySelector('#my-app-1')
+                    document.getElementById('my-app-1')
+                );
+            })();
+        </script>
+
+        <h2>Conditionals</h2>
+        <p>
+            You can assign components to variables, just like any other type of
+            data
+        </p>
+        <ul>
+            <li>
+                This is especially useful when you need to render different
+                components depending on conditional and ternary statements
+            </li>
+            <li>
+                e.g:
+                <code
+                    >const DisplayComponent = condition ? Component1 :
+                    Component2</code
+                >
+            </li>
+        </ul>
+        <p>
+            You can also use <code>JS</code> conditional expressions inside
+            <code>JSX</code>, for example:
+        </p>
+        <ul>
+            <li>
+                <code>{condition && Component1}</code> renders the component if
+                the condition is met, otherwise nothing is output
+            </li>
+            <li>
+                <code>{condition ? Component1 : Component2}</code> renders the
+                first component if the condition is met, otherwise the 2nd one
+                is displayed
+            </li>
+        </ul>
+        <p>You can also conditionally hide components:</p>
+        <ul>
+            <li>
+                If you return <code>null</code> from the function/render method,
+                then the component will be hidden
+            </li>
+            <li>Note that the lifecycle hooks/methods are still triggered</li>
+        </ul>
+        <!-- -->
+        <div id="my-app-2" class="component"></div>
+        <script type="text/babel">
+            (function () {
+                const Component1 = () => 'Component #1';
+                const Component2 = () => 'Component #2';
+                const RenderComponent = ({ condition }) => {
+                    return (
+                        <React.Fragment>
+                            <p>
+                                <strong>Ternary: </strong>
+                                {condition ? <Component1 /> : <Component2 />}
+                                <br />
+                                <strong>AND: </strong>
+                                {condition && <Component1 />}
+                            </p>
+                        </React.Fragment>
+                    );
+                };
+                ReactDOM.render(
+                    <React.Fragment>
+                        <RenderComponent condition={true} />
+                        <RenderComponent condition={false} />
+                    </React.Fragment>,
+                    document.getElementById('my-app-2')
                 );
             })();
         </script>
