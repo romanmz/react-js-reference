@@ -175,5 +175,197 @@
                 );
             })();
         </script>
+
+        <h2>Controlled Components (Forms)</h2>
+        <p>
+            Controlled components are form input elements whose values are
+            controlled by <code>React</code>.
+        </p>
+        <ul>
+            <li>
+                for <code>input</code> elements
+                <ol>
+                    <li>
+                        add an <code>onChange</code> event handler, so that
+                        whenever the user changes the input text, the
+                        corresponding <code>state</code> property will also be
+                        updated
+                    </li>
+                    <li>
+                        bind the <code>value</code> attribute to the
+                        <code>state</code> property, so that if the
+                        <code>state</code> data happens to be updated somewhere
+                        else, the input will be updated automatically to reflect
+                        this change
+                    </li>
+                </ol>
+            </li>
+            <li>
+                to enable <code>textarea</code> elements, you need to write them
+                as self closing elements with a <code>value</code> property,
+                same as <code>input</code> tags
+            </li>
+            <li>
+                for <code>select</code> elements, also add a
+                <code>value</code> attribute, and <code>React</code> will
+                automatically add the <code>selected</code> attribute to the
+                element that matches that value
+            </li>
+            <li>
+                for <code>checkbox</code> inputs, bind a boolean
+                <code>state</code> property to the
+                <code>checked</code> attribute. On the event handler you can
+                access the value at <code>e.target.checked</code>
+            </li>
+            <li>
+                you could reuse the same event handler for multiple inputs, and
+                differentiate them by their <code>name</code>,
+                <code>type</code>, <code>id</code> attributes, which you can
+                then access on the event handler at
+                <code>e.target[<var>attribute</var>]</code>
+            </li>
+        </ul>
+        <p>Levels of control:</p>
+        <ul>
+            <li>
+                <strong>Controlled inputs:</strong> bind data to
+                <code>value</code> attribute, along with a
+                <code>onChange</code> event handler
+            </li>
+            <li>
+                <strong>Read-only inputs:</strong> bind data to
+                <code>value</code> attribute along with a
+                <code>readOnly</code> attribute
+            </li>
+            <li>
+                <strong>Uncontrolled inputs:</strong> omit the
+                <code>value</code> attribute, or assign it as
+                <code>value={undefined}</code>
+            </li>
+            <li>
+                <strong>Uncontrolled inputs (with default value):</strong> same
+                rule as previous point, plus the
+                <code>defaultValue</code> attribute
+            </li>
+        </ul>
+        <p>Specialized libraries for <code>React</code> forms:</p>
+        <ul>
+            <li><a href="https://formik.org">Formik</a></li>
+        </ul>
+        <p>Uncontrolled components:</p>
+        <ul>
+            <li><code>file</code> inputs</li>
+        </ul>
+        <!-- -->
+        <div id="my-app-4" class="component"></div>
+        <script type="text/babel">
+            (function () {
+                class NameForm extends React.Component {
+                    state = {
+                        text: '',
+                        textarea: 'Write your comment here',
+                        'select-one': 'item3',
+                        checkbox: false,
+                    };
+                    onInputChange = (e) => {
+                        this.setState({ [e.target.type]: e.target.value });
+                    };
+                    onCheckboxChange = (e) => {
+                        this.setState({ checkbox: e.target.checked });
+                    };
+                    onResetFields = (e) => {
+                        this.setState({
+                            text: 'John Doe',
+                            textarea: 'Lorem ipsum',
+                            'select-one': 'item1',
+                            checkbox: false,
+                        });
+                    };
+                    onFormSubmit = (e) => {
+                        console.log(this.state);
+                        e.preventDefault();
+                    };
+
+                    render() {
+                        return (
+                            <form onSubmit={this.onFormSubmit}>
+                                <p>
+                                    Text: {this.state.text}
+                                    <br />
+                                    Textarea: {this.state.textarea}
+                                    <br />
+                                    Select: {this.state['select-one']}
+                                    <br />
+                                    Checkbox:{' '}
+                                    {this.state.checkbox ? 'Yes' : 'No'}
+                                </p>
+                                <p>
+                                    <label>
+                                        Text:
+                                        <input
+                                            type="text"
+                                            value={this.state.text}
+                                            onChange={this.onInputChange}
+                                        />
+                                    </label>
+                                </p>
+                                <p>
+                                    <label>
+                                        Textarea:
+                                        <textarea
+                                            value={this.state.textarea}
+                                            onChange={this.onInputChange}
+                                        />
+                                    </label>
+                                </p>
+                                <p>
+                                    <label>
+                                        Select:{' '}
+                                        <select
+                                            value={this.state['select-one']}
+                                            onChange={this.onInputChange}
+                                        >
+                                            {[1, 2, 3].map((item) => (
+                                                <option
+                                                    key={item}
+                                                    value={`item${item}`}
+                                                >
+                                                    Item #{item}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </label>
+                                </p>
+                                <p>
+                                    <label>
+                                        Checkbox:
+                                        <input
+                                            type="checkbox"
+                                            checked={this.state.checkbox}
+                                            onChange={this.onCheckboxChange}
+                                        />
+                                    </label>
+                                </p>
+                                <p>
+                                    <button
+                                        type="button"
+                                        onClick={this.onResetFields}
+                                    >
+                                        Reset Fields
+                                    </button>
+                                </p>
+                                <div>
+                                    <button type="submit">Submit</button>
+                                </div>
+                            </form>
+                        );
+                    }
+                }
+                ReactDOM.render(
+                    <NameForm />,
+                    document.querySelector('#my-app-4')
+                );
+            })();
+        </script>
     </body>
 </html>
