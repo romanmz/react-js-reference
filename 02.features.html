@@ -136,5 +136,44 @@
                 );
             })();
         </script>
+
+        <h2>Loops</h2>
+        <p>To dynamically render multiple elements based on an array:</p>
+        <ol>
+            <li>Call the <code>map</code> method on the array</li>
+            <li>
+                Pass a function that returns the dynamically generated
+                <code>React</code> elements
+            </li>
+            <li>
+                If you're storing the resulting array of elements in a variable,
+                to render it just pass the variable inside brackets
+                <code>{finalElements}</code>
+            </li>
+            <li>
+                Or you could also call the <code>map</code> method directly in
+                the markup as an expression
+                <code>{array.map( item => &lt;li&gt;{item}&lt;/li&gt; )}</code>
+            </li>
+        </ol>
+        <!-- -->
+        <div id="my-app-3" class="component"></div>
+        <script type="text/babel">
+            (function () {
+                let numbers = [1, 4, 6];
+                let elements = numbers.map((number) => (
+                    <li key={`stored-${number}`}>Stored #{number}</li>
+                ));
+                ReactDOM.render(
+                    <ul>
+                        {elements}
+                        {numbers.map((number) => (
+                            <li key={`direct-${number}`}>Direct: #{number}</li>
+                        ))}
+                    </ul>,
+                    document.querySelector('#my-app-3')
+                );
+            })();
+        </script>
     </body>
 </html>
